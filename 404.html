@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Page not found — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="robots" content="noindex"/>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<link rel="stylesheet" href="styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  /* 404 page-local styles. Kept here (not in styles.css) because they are
+     only used on this page. */
+  .nf-main {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 0;
+    background: #fff;
+  }
+  @media (min-width: 1024px) { .nf-main { min-height: calc(100vh - 72px); } }
+
+  .nf-content { text-align: center; max-width: 640px; margin: 0 auto; }
+  .nf-code {
+    font-family: var(--font-sans);
+    font-size: clamp(140px, 22vw, 260px);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .nf-sub { margin: 14px auto 32px; }
+  .nf-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+</style>
+</head>
+<body data-screen-label="404">
+  <div id="root"></div>
+  <script type="text/babel" src="partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    function NotFound() {
+      return (
+        <Fragment>
+          <SiteHeader active=""/>
+
+          <main className="nf-main">
+            <div className="container nf-content">
+              <div className="nf-code">404</div>
+              <h1>Page not found</h1>
+              <p className="lead nf-sub">The page you're looking for doesn't exist or has moved.</p>
+              <div className="nf-actions">
+                <a className="btn btn-primary btn-lg" href="index.html">Back to homepage</a>
+                <a className="btn btn-secondary btn-lg" href="mailto:contact@constructorfabric.org">Contact us</a>
+              </div>
+            </div>
+          </main>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<NotFound/>);
+  </script>
+</body>
+</html>

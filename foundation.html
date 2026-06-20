@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Foundation — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="description" content="A non-profit governing the open source projects that make up Constructor Fabric. Apache 2.0. Founded by Acronis, Constructor Group, and Virtuozzo."/>
+<link rel="canonical" href="https://constructorfabric.org/foundation.html"/>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://constructorfabric.org/foundation.html"/>
+<meta property="og:title" content="Foundation — Constructor Fabric"/>
+<meta property="og:description" content="A non-profit governing the open source projects that make up Constructor Fabric. Apache 2.0. Founded by Acronis, Constructor Group, and Virtuozzo."/>
+<meta property="og:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Foundation — Constructor Fabric"/>
+<meta name="twitter:description" content="A non-profit governing the open source projects that make up Constructor Fabric. Apache 2.0. Founded by Acronis, Constructor Group, and Virtuozzo."/>
+<meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  .ambition-card { position:relative; background: linear-gradient(160deg,#0A2D63 0%,#00204D 60%,#001838 100%); border-radius:20px; padding:32px 28px; overflow:hidden; color:#fff; border:1px solid rgba(107,165,240,.18); }
+  .ambition-card::before { content:""; position:absolute; inset:-40% -20% auto auto; width:300px; height:300px; background: radial-gradient(closest-side, rgba(107,165,240,.22), transparent 70%); }
+  .ambition-card .num { position:relative; font-size:64px; line-height:1; font-weight:600; letter-spacing:-0.04em; background: linear-gradient(135deg,#6BA5F0 0%,#0065E3 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  @media (min-width: 768px) { .ambition-card .num { font-size:80px; } }
+  .ambition-card h3 { color:#fff; font-size:18px; margin-top:14px; }
+  .ambition-card p { color: rgba(255,255,255,.78); margin-top:8px; font-size:14.5px; line-height:1.55; }
+  .member-card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:28px; box-shadow: var(--shadow-card); }
+  .member-card__logo { display:flex; align-items:center; height:64px; margin-bottom:4px; }
+  .member-card__logo img { max-height:32px; max-width:220px; width:auto; height:auto; object-fit:contain; }
+  .member-card__logo img[alt="Acronis"] { max-height:48px; }
+  .member-card__logo img[alt="Constructor Group"] { max-height:56px; }
+  .member-tags { display:flex; gap:6px; flex-wrap:wrap; margin: 14px 0 16px; }
+  .member-tag { font-family: var(--font-mono); font-size:11px; letter-spacing:.06em; padding:4px 10px; border-radius:999px; background: var(--blue-tint); color: var(--blue); }
+</style>
+</head>
+<body data-screen-label="Foundation">
+  <div id="root"></div>
+  <script type="text/babel" src="partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    function MemberCard({ name, logo, copy, tags }) {
+      return (
+        <div className="member-card">
+          <div className="member-card__logo">
+            <img src={logo} alt={name}/>
+          </div>
+          <div className="member-tags">{tags.map((t,i)=> <span key={i} className="member-tag">{t}</span>)}</div>
+          <p style={{color:'var(--text-2)', margin:0, lineHeight:1.6, fontSize:15}}>{copy}</p>
+        </div>
+      );
+    }
+
+    function Foundation() {
+      return (
+        <Fragment>
+          <SiteHeader active="foundation"/>
+
+          <section className="page-hero">
+            <div className="hero-bg"/>
+            <div className="container" style={{position:'relative'}}>
+              <div className="page-hero__inner">
+                <div>
+                  <h1 className="page-hero__title">The Constructor Fabric Foundation</h1>
+                  <p className="page-hero__lead">
+                    A non-profit governing the open source projects that make up Constructor Fabric. Apache 2.0. Founding members combine 50+ years of experience building, scaling, and securing global SaaS systems.
+                  </p>
+                  <div style={{display:'flex', gap:12, flexWrap:'wrap', marginTop:28}}>
+                    <a className="btn btn-secondary btn-lg" href="#governance">Governance</a>
+                    <a className="btn btn-secondary btn-lg" href="#members">Founding members</a>
+                  </div>
+                </div>
+                <div>
+                  <div className="frame" style={{padding:20, background:'#fff'}}>
+                    <div style={{padding:16}}>
+                      <div className="eyebrow" style={{margin:0}}>Charter</div>
+                      <h3 style={{marginTop:14, fontSize:20, color:'var(--navy)'}}>Open. Plural. Vendor-neutral.</h3>
+                      <ul className="bullets" style={{marginTop:14}}>
+                        <li>Apache 2.0 in perpetuity</li>
+                        <li>Plugin-based — no privileged vendor</li>
+                        <li>Transparent technical steering</li>
+                        <li>Public roadmap, public minutes</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* MISSION + GOVERNANCE */}
+          <section id="mission" className="section section--white">
+            <div className="container">
+              <div style={{display:'grid', gridTemplateColumns:'1fr', gap:48}} className="mg-grid">
+                <div>
+                  <h2 style={{marginBottom:16}}>Mission</h2>
+                  <p style={{ fontSize:'var(--fs-lead)', color:'var(--text-2)', lineHeight:1.6 }}>
+                    To create a world where companies no longer struggle with software complexity - where intelligent automation streamlines the full software lifecycle – plan, build, run - and enables thousands of software businesses to scale within a multi-trillion-dollar global market.
+                  </p>
+                </div>
+                <div id="governance">
+                  <h2 style={{marginBottom:16}}>Governance</h2>
+                  <ul className="bullets">
+                    <li><a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0</a> open source license</li>
+                    <li>Plugin-based, extensible architecture</li>
+                    <li>Supports most languages, stacks, and deployment models</li>
+                  </ul>
+                </div>
+              </div>
+              <style>{`@media (min-width: 1024px) { .mg-grid { grid-template-columns: 1fr 1fr !important; gap: 64px !important; } }`}</style>
+            </div>
+          </section>
+
+          {/* MEMBERS */}
+          <section className="section section--soft">
+            <div className="container">
+              <div className="section-head">
+                <h2>Founding members</h2>
+              </div>
+              <div className="grid-3">
+                <MemberCard
+                  name="Acronis"
+                  logo="assets/img/founders/Acronis.svg.png"
+                  tags={[]}
+                  copy="A global leader in cyber protection, unifying cybersecurity, data protection, and endpoint management for service providers and businesses worldwide. Operates highly scalable, secure SaaS systems across dozens of datacenters worldwide, with millions of users and endpoints." />
+                <MemberCard
+                  name="Constructor Group"
+                  logo="assets/img/founders/c-group-logo.png"
+                  tags={[]}
+                  copy="A technology-driven education and innovation group building advanced software, data, and AI platforms across research, education, and industry. Brings bleeding-edge AI and scientific research expertise." />
+                <MemberCard
+                  name="Virtuozzo"
+                  logo="assets/img/founders/virtuozzo-logo.png"
+                  tags={[]}
+                  copy="A pioneer in cloud infrastructure and platform technologies, powering service providers with scalable compute, storage, and application platforms. 25 years of expertise in efficient, performant, secure system-level software." />
+              </div>
+            </div>
+          </section>
+
+          {/* TEAM */}
+          <section id="members" className="section section--white">
+            <div className="container">
+              <div className="section-head">
+                <h2>The Team</h2>
+              </div>
+              <div className="grid-4">
+                <TeamCard
+                  name="Serg Bell"
+                  role="Chief Constructor · Constructor Group"
+                  src="assets/img/team/serg-bell.png"
+                  bio="An entrepreneur and investor — cofounded and led many global enterprise software companies including cyber protection company Acronis, virtualization provider Parallels (acquired by Corel), service automation platform Odin (acquired by Ingram Micro) and the Constructor as founder and primary investor. Pioneered container virtualization technology in the early 2000s, co-author of dozens of patents in virtualization, resource management, storage, automation and orchestration." />
+                <TeamCard
+                  name="Oleg Melnikov"
+                  role="Partner · Constructor Capital"
+                  src="assets/img/team/oleg-melnikov.jpg"
+                  bio="Cofounded Parallels and Acronis, led the automation business of Parallels — architected and managed the cloud automation platform Odin — run by 350+ telecoms and cloud service providers worldwide. Former CTO of Acronis. Co-authored patents in storage, data protection and business automation." />
+                <TeamCard
+                  name="Alex Andreev"
+                  role="Chief Architect · Acronis"
+                  src="assets/img/team/alexander-andreev.jpg"
+                  bio="Chief Architect with 20+ years of experience designing and scaling cloud (XaaS) platforms. Previously held leadership roles at Virtuozzo, Parallels, and Ingram Micro Cloud. Focused on cybersecurity, distributed systems, serverless architectures, and AI, with a track record of building secure, multi-tenant, hyper-scale services." />
+                <TeamCard
+                  name="Vlad Zatsepin"
+                  role="SVP, AI Transformation · Acronis"
+                  src="assets/img/team/vladimir-zatsepin.jpg"
+                  bio="AI enthusiast and software engineering leader who spearheaded AI transformation at Acronis and built its Singapore R&D Center from a small regional team. Developed one of the largest cloud services distribution platforms at Ingram Micro, SaaS integration technologies such as the Application Packaging Standard, business automation systems including Odin Automation and HSPcomplete, and other software. Co-authored several patents." />
+              </div>
+            </div>
+          </section>
+
+          <CtaStart/>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Foundation/>);
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView();
+      }, 0);
+    }
+  </script>
+</body>
+</html>

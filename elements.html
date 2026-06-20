@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Elements — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="description" content="The three elements of Constructor Fabric: SDLC governance, productivity benchmarking, and reusable components."/>
+<link rel="canonical" href="https://constructorfabric.org/elements.html"/>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://constructorfabric.org/elements.html"/>
+<meta property="og:title" content="Elements — Constructor Fabric"/>
+<meta property="og:description" content="The three elements of Constructor Fabric: SDLC governance, productivity benchmarking, and reusable components."/>
+<meta property="og:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Elements — Constructor Fabric"/>
+<meta name="twitter:description" content="The three elements of Constructor Fabric: SDLC governance, productivity benchmarking, and reusable components."/>
+<meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-screen-label="Elements">
+  <div id="root"></div>
+  <script type="text/babel" src="partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    function WareCard({ title, items }) {
+      return (
+        <div className="card" style={{display:'flex', flexDirection:'column', gap:12}}>
+          <h3>{title}</h3>
+          <ul className="bullets">{items.map((i,k)=> <li key={k}>{i}</li>)}</ul>
+        </div>
+      );
+    }
+
+    function InsightSlider() {
+      const slides = [
+        'assets/img/insight-screenshots/insight-Screenshot-01.png',
+        'assets/img/insight-screenshots/insight-Screenshot-02.png',
+        'assets/img/insight-screenshots/insight-Screenshot-03.png',
+        'assets/img/insight-screenshots/insight-Screenshot-04.png',
+      ];
+      const [current, setCurrent] = React.useState(0);
+      const [loaded, setLoaded] = React.useState(() => new Set([0, 1]));
+      const [isZoomed, setIsZoomed] = React.useState(false);
+      const touchStartX = React.useRef(null);
+
+      const goTo = React.useCallback((i) => {
+        const next = (i + slides.length) % slides.length;
+        setCurrent(next);
+        setLoaded(prev => {
+          if (prev.has(next) && prev.has((next + 1) % slides.length) && prev.has((next - 1 + slides.length) % slides.length)) return prev;
+          const s = new Set(prev);
+          s.add(next);
+          s.add((next + 1) % slides.length);
+          s.add((next - 1 + slides.length) % slides.length);
+          return s;
+        });
+      }, [slides.length]);
+
+      const onKeyDown = (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+        else if (e.key === 'Enter' || e.key === ' ') {
+          if (e.target.tagName !== 'BUTTON') { e.preventDefault(); setIsZoomed(true); }
+        }
+      };
+
+      const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+      const onTouchEnd = (e) => {
+        if (touchStartX.current == null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(dx) > 40) { goTo(current + (dx < 0 ? 1 : -1)); }
+        touchStartX.current = null;
+      };
+
+      React.useEffect(() => {
+        if (!isZoomed) return;
+        const onKey = (e) => {
+          if (e.key === 'Escape') setIsZoomed(false);
+          else if (e.key === 'ArrowLeft') goTo(current - 1);
+          else if (e.key === 'ArrowRight') goTo(current + 1);
+        };
+        document.addEventListener('keydown', onKey);
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+          document.removeEventListener('keydown', onKey);
+          document.body.style.overflow = prevOverflow;
+        };
+      }, [isZoomed, current, goTo]);
+
+      return (
+        <div className="insight-slider" tabIndex={0} onKeyDown={onKeyDown} aria-roledescription="carousel" aria-label="Constructor Insight screenshots">
+          <div className="insight-slider__viewport" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+            {slides.map((src, i) => (
+              <button
+                key={i}
+                type="button"
+                className={'insight-slider__slide' + (i === current ? ' is-active' : '')}
+                onClick={() => setIsZoomed(true)}
+                aria-hidden={i === current ? 'false' : 'true'}
+                tabIndex={i === current ? 0 : -1}
+                aria-label={`Open screenshot ${i + 1} of ${slides.length} at full size`}
+              >
+                {loaded.has(i) ? (
+                  <img src={src} alt={`Constructor Insight screenshot ${i + 1}`} loading="lazy" decoding="async" draggable="false"/>
+                ) : null}
+              </button>
+            ))}
+            <button type="button" className="insight-slider__nav insight-slider__nav--prev" onClick={() => goTo(current - 1)} aria-label="Previous screenshot">‹</button>
+            <button type="button" className="insight-slider__nav insight-slider__nav--next" onClick={() => goTo(current + 1)} aria-label="Next screenshot">›</button>
+          </div>
+          <div className="insight-slider__dots" role="tablist" aria-label="Select screenshot">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                role="tab"
+                className={'insight-slider__dot' + (i === current ? ' is-active' : '')}
+                onClick={() => goTo(i)}
+                aria-label={`Go to screenshot ${i + 1}`}
+                aria-selected={i === current}
+              />
+            ))}
+          </div>
+          {isZoomed ? (
+            <div className="insight-lightbox" role="dialog" aria-modal="true" aria-label="Constructor Insight screenshot full size" onClick={() => setIsZoomed(false)}>
+              <button type="button" className="insight-lightbox__close" onClick={() => setIsZoomed(false)} aria-label="Close full size view">×</button>
+              <img src={slides[current]} alt={`Constructor Insight screenshot ${current + 1}`} onClick={(e) => e.stopPropagation()}/>
+            </div>
+          ) : null}
+        </div>
+      );
+    }
+
+    function Elements() {
+      return (
+        <Fragment>
+          <SiteHeader active="elements"/>
+
+          <section className="page-hero">
+            <div className="hero-bg"/>
+            <div className="container" style={{position:'relative'}}>
+              <div className="page-hero__inner">
+                <div>
+                  <h1 className="page-hero__title">Three elements</h1>
+                  <h2 style={{ fontWeight:500, color:'var(--text-2)', marginBottom:18 }}>
+                    <span className="gradient-text">Modular by design</span>
+                  </h2>
+                  <p className="page-hero__lead">
+                    Use any one element independently: Constructor Studio for SDLC governance, Constructor Insight for productivity benchmarking, or Constructor Gears for reusable components. Combine them as needed.
+                  </p>
+                  <div style={{display:'flex', gap:12, flexWrap:'wrap', marginTop:28}}>
+                    <a href="#studio" className="btn btn-secondary btn-lg">Constructor Studio</a>
+                    <a href="#insight" className="btn btn-secondary btn-lg">Constructor Insight</a>
+                    <a href="#gears" className="btn btn-secondary btn-lg">Constructor Gears</a>
+                  </div>
+                </div>
+                <div style={{position:'relative'}}>
+                  <div className="frame">
+                    <div className="frame__topbar">
+                      <span className="dot"/><span className="dot"/><span className="dot"/>
+                      <span className="url">app.constructorfabric.org/insight</span>
+                    </div>
+                    <div className="frame__body">
+                      <img src="assets/img/insight-dashboard.png" alt="Constructor Insight dashboard"
+                           style={{width:'100%', display:'block'}}
+                           onError={(e)=>{ e.currentTarget.style.display='none'; e.currentTarget.nextElementSibling.style.display='block'; }}/>
+                      <div style={{display:'none'}}>
+                        <InsightDashboard compact/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* CONSTRUCTOR STUDIO */}
+          <section id="studio" className="section section--white">
+            <div className="container">
+              <div style={{display:'grid', gridTemplateColumns:'1fr', gap:48, alignItems:'center'}} className="elem-grid">
+                <div>
+                  <h2 style={{marginBottom:14}}>Constructor Studio</h2>
+                  <p style={{ fontSize:'var(--fs-lead)', color:'var(--text-2)', maxWidth:'56ch', lineHeight:1.6 }}>
+                    Structure and process organizer for the full SDLC. Specifications, traceability, AI governance.
+                  </p>
+                  <p style={{ fontSize:15.5, color:'var(--text-2)', maxWidth:'56ch', lineHeight:1.6, marginTop:14 }}>
+                    Constructor Studio is the spine of the lifecycle. It organizes specifications, designs, code, tests, deployments, and operations into one connected, traceable flow.
+                  </p>
+                  <p style={{ fontSize:15.5, color:'var(--text-2)', maxWidth:'56ch', lineHeight:1.6, marginTop:14 }}>
+                    End-to-end transformation from requirements to production: governed by deterministic IDs, validation, and reconciliation. AI generation is bounded by specifications, not free-form prompting. Consistency is enforced, not hoped for.
+                  </p>
+                  <p style={{marginTop:14, fontSize:15, color:'var(--text-2)'}}>
+                    <strong style={{color:'var(--navy)'}}>Who uses it.</strong> Engineering managers, architects, and CTOs who need consistent, AI-governed delivery across teams and repositories.
+                  </p>
+                  <div style={{display:'flex', gap:12, marginTop:22}}>
+                    <a className="btn btn-primary" href="https://github.com/constructorfabric/studio"><GitHubIcon size={16}/>View Constructor Studio on GitHub →</a>
+                  </div>
+                </div>
+                <div>
+                  <h3 style={{marginBottom:14}}>Capabilities</h3>
+                  <ul className="bullets">
+                    <li>SPEC templates and checklists</li>
+                    <li>Customizable code generation workflows</li>
+                    <li>Traceability IDs across the lifecycle</li>
+                    <li>Deterministic CI checks for AI output</li>
+                    <li>Brownfield project support</li>
+                    <li>ISO 29148 compliance</li>
+                    <li>Cross-repository spec and code validation</li>
+                    <li>Sub-agent support</li>
+                    <li>IDE plugins (planned)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* CONSTRUCTOR INSIGHT */}
+          <section id="insight" className="section section--soft">
+            <div className="container">
+              <div style={{display:'grid', gridTemplateColumns:'1fr', gap:48, alignItems:'start'}} className="elem-grid-rev">
+                <div className="elem-frame">
+                  <InsightSlider/>
+                </div>
+                <div className="elem-text">
+                  <h2 style={{marginBottom:14}}>Constructor Insight</h2>
+                  <p style={{ fontSize:'var(--fs-lead)', color:'var(--text-2)', maxWidth:'56ch', lineHeight:1.6 }}>
+                    Productivity acceleration. See how AI affects your organization's productivity.
+                  </p>
+                  <p style={{ fontSize:15.5, color:'var(--text-2)', maxWidth:'56ch', lineHeight:1.6, marginTop:14 }}>
+                    Constructor Insight defines roles and activities, connects to your systems through ready-to-use connectors (including AI tools), and measures productivity at individual, team, and organization levels. Drill from headline metrics down to source data.
+                  </p>
+                  <p style={{ fontSize:15.5, color:'var(--text-2)', maxWidth:'56ch', lineHeight:1.6, marginTop:14 }}>
+                    Correlate AI adoption with real output. Identify where investments in tools, processes, and training actually move the needle.
+                  </p>
+                  <p style={{marginTop:14, fontSize:15, color:'var(--text-2)'}}>
+                    <strong style={{color:'var(--navy)'}}>Who uses it.</strong> CTOs, VPs of Engineering, and engineering managers who need visibility across teams, tools, and AI assistants.
+                  </p>
+                  <h3 style={{marginTop:28, marginBottom:14}}>What it measures</h3>
+                  <ul className="bullets">
+                    <li>Structure (Constructor Studio usage)</li>
+                    <li>Stack (Constructor Gears usage)</li>
+                    <li>Efficiency, performance, reliability, versatility</li>
+                    <li>Roles and activities</li>
+                    <li>AI adoption correlation</li>
+                  </ul>
+                  <div style={{display:'flex', gap:12, marginTop:22}}>
+                    <a className="btn btn-primary" href="https://github.com/constructorfabric/insight"><GitHubIcon size={16}/>View Constructor Insight on GitHub →</a>
+                  </div>
+                </div>
+              </div>
+              <style>{`
+                @media (min-width: 1024px) {
+                  .elem-grid, .elem-grid-rev { grid-template-columns: 1fr 1fr !important; gap: 64px !important; }
+                  .elem-grid-rev .elem-text { order: 2; }
+                  .elem-grid-rev .elem-frame { order: 1; }
+                }
+                .insight-slider { display: flex; flex-direction: column; gap: 14px; outline: none; }
+                .insight-slider:focus-visible { outline: 2px solid var(--navy, #0a2540); outline-offset: 4px; border-radius: 8px; }
+                .insight-slider__viewport {
+                  position: relative;
+                  width: 100%;
+                  background: rgba(0,0,0,0.04);
+                  border-radius: 12px;
+                  overflow: hidden;
+                  aspect-ratio: 16 / 10;
+                  box-shadow: 0 6px 24px rgba(10,37,64,0.08);
+                }
+                .insight-slider__slide {
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  margin: 0;
+                  padding: 0;
+                  border: 0;
+                  background: transparent;
+                  cursor: zoom-in;
+                  opacity: 0;
+                  transition: opacity 220ms ease;
+                  pointer-events: none;
+                }
+                .insight-slider__slide.is-active { opacity: 1; pointer-events: auto; z-index: 1; }
+                .insight-slider__slide img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                  display: block;
+                  user-select: none;
+                  -webkit-user-drag: none;
+                }
+                .insight-slider__nav {
+                  position: absolute;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  border: 0;
+                  background: rgba(255,255,255,0.92);
+                  color: var(--navy, #0a2540);
+                  font-size: 24px;
+                  line-height: 1;
+                  cursor: pointer;
+                  box-shadow: 0 2px 8px rgba(10,37,64,0.18);
+                  z-index: 2;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0;
+                  transition: background 150ms ease, transform 150ms ease;
+                }
+                .insight-slider__nav:hover { background: #fff; transform: translateY(-50%) scale(1.06); }
+                .insight-slider__nav:focus-visible { outline: 2px solid var(--navy, #0a2540); outline-offset: 2px; }
+                .insight-slider__nav--prev { left: 12px; }
+                .insight-slider__nav--next { right: 12px; }
+                .insight-slider__dots { display: flex; justify-content: center; gap: 8px; }
+                .insight-slider__dot {
+                  width: 9px;
+                  height: 9px;
+                  border-radius: 50%;
+                  border: 0;
+                  background: rgba(10,37,64,0.25);
+                  cursor: pointer;
+                  padding: 0;
+                  transition: background 150ms ease, transform 150ms ease;
+                }
+                .insight-slider__dot:hover { background: rgba(10,37,64,0.5); }
+                .insight-slider__dot.is-active { background: var(--navy, #0a2540); transform: scale(1.25); }
+                .insight-slider__dot:focus-visible { outline: 2px solid var(--navy, #0a2540); outline-offset: 2px; }
+                .insight-lightbox {
+                  position: fixed;
+                  inset: 0;
+                  background: rgba(10,18,32,0.88);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 1000;
+                  padding: 24px;
+                  cursor: zoom-out;
+                  animation: insight-fade-in 160ms ease;
+                }
+                .insight-lightbox img {
+                  max-width: 95vw;
+                  max-height: 92vh;
+                  object-fit: contain;
+                  border-radius: 6px;
+                  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                  cursor: default;
+                }
+                .insight-lightbox__close {
+                  position: absolute;
+                  top: 16px;
+                  right: 20px;
+                  width: 44px;
+                  height: 44px;
+                  border-radius: 50%;
+                  border: 0;
+                  background: rgba(255,255,255,0.12);
+                  color: #fff;
+                  font-size: 28px;
+                  line-height: 1;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0;
+                }
+                .insight-lightbox__close:hover { background: rgba(255,255,255,0.22); }
+                .insight-lightbox__close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+                @keyframes insight-fade-in { from { opacity: 0; } to { opacity: 1; } }
+                @media (max-width: 600px) {
+                  .insight-slider__nav { width: 34px; height: 34px; font-size: 20px; }
+                  .insight-slider__nav--prev { left: 6px; }
+                  .insight-slider__nav--next { right: 6px; }
+                }
+              `}</style>
+            </div>
+          </section>
+
+          {/* CONSTRUCTOR WARE */}
+          <section id="gears" className="section section--white">
+            <div className="container">
+              <div style={{marginBottom:40}}>
+                <h2 style={{marginBottom:14}}>Constructor Gears</h2>
+                <p style={{ fontSize:'var(--fs-lead)', color:'var(--text-2)', maxWidth:'58ch', lineHeight:1.6 }}>
+                  Reusable components. Skip the commodity. Ship the product.
+                </p>
+                <p style={{ fontSize:15.5, color:'var(--text-2)', maxWidth:'58ch', lineHeight:1.6, marginTop:14 }}>
+                  Business Support System (BSS) modules, Operational Support Systems (OSS) modules, platform services, and integration engines, ready to plug in. Spend engineering time on what makes your service different.
+                </p>
+              </div>
+              <div className="grid-4">
+                <WareCard title="BSS Modules & Integrations"
+                  items={['Account Management','Product Catalog','Usage Metering','Taxation','Account Receivable','Pricing','Billing','Payment Collections','Customer Support','Subscriptions','Invoicing','Business Intelligence']} />
+                <WareCard title="OSS Modules & Integrations"
+                  items={['Identity Management','Access & Policy','Provisioning']} />
+                <WareCard title="Core Platform Components & Integrations"
+                  items={['Apps Engine','Low-Code Engine','Gen AI Engine','Integration Engine','Notifications Engine','Presentation Engine','Monitoring & Audit']} />
+                <WareCard title="Code Generation & SDLC Pipeline Automation"
+                  items={['DNA (Core Guidelines)','Frontend Dev Kit','Backend Dev Kit','Mobile Dev Kit','Docs Dev Kit','Dev Tools']} />
+              </div>
+              <p style={{marginTop:32, fontSize:15, color:'var(--text-2)'}}>
+                <strong style={{color:'var(--navy)'}}>Who uses it.</strong> Founders and platform teams that want to skip building commodity infrastructure.
+              </p>
+              <div style={{display:'flex', gap:12, marginTop:22}}>
+                <a className="btn btn-primary" href="https://github.com/constructorfabric/gears-rust"><GitHubIcon size={16}/>View Constructor Gears on GitHub →</a>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA */}
+          <CtaStart/>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Elements/>);
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView();
+      }, 0);
+    }
+  </script>
+</body>
+</html>

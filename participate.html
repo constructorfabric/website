@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Participate — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="description" content="How to participate in Constructor Fabric: three levels of adoption and six ways to contribute."/>
+<link rel="canonical" href="https://constructorfabric.org/participate.html"/>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://constructorfabric.org/participate.html"/>
+<meta property="og:title" content="Participate — Constructor Fabric"/>
+<meta property="og:description" content="How to participate in Constructor Fabric: three levels of adoption and six ways to contribute."/>
+<meta property="og:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Participate — Constructor Fabric"/>
+<meta name="twitter:description" content="How to participate in Constructor Fabric: three levels of adoption and six ways to contribute."/>
+<meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  .level-card { position:relative; background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px; box-shadow: var(--shadow-card); display:flex; flex-direction:column; }
+  .level-card.feature { border-color:transparent; box-shadow: 0 0 0 2px var(--blue), 0 24px 56px -16px rgba(0,101,227,.25); transform: none; }
+  @media (min-width: 1024px) { .level-card.feature { transform: translateY(-12px); } }
+.level-card .feature-flag { position:absolute; top:-12px; left:30px; background: var(--blue); color:#fff; font-family: var(--font-mono); font-size:11px; letter-spacing:.14em; padding:6px 12px; border-radius:999px; }
+  .contrib-card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px; display:flex; flex-direction:column; gap:14px; transition: border-color .15s, transform .15s; }
+  .contrib-card:hover { border-color: var(--navy); transform: translateY(-2px); }
+  .contrib-icon { width:44px; height:44px; border-radius:12px; background: var(--blue-tint); color: var(--blue); display:inline-flex; align-items:center; justify-content:center; }
+  .contact-card { background: linear-gradient(135deg,#0A2D63 0%,#00204D 60%,#001838 100%); color:#fff; border-radius:24px; padding:48px; display:grid; gap:40px; grid-template-columns: 1fr; }
+  @media (min-width: 1024px) { .contact-card { padding:64px; grid-template-columns: 1.2fr 1fr; gap: 64px; } }
+  .contact-card h2 { color:#fff; }
+  .contact-card .field { font-family: var(--font-mono); font-size:14px; color: rgba(255,255,255,.85); padding:14px 16px; border:1px solid rgba(255,255,255,.16); border-radius:10px; background: rgba(255,255,255,.03); }
+</style>
+</head>
+<body data-screen-label="Participate">
+  <div id="root"></div>
+  <script type="text/babel" src="partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    function ContribCard({ icon, title, body, link }) {
+      return (
+        <a href={link || '#'} className="contrib-card" style={{textDecoration:'none', color:'inherit'}}>
+          <div className="contrib-icon">{icon}</div>
+          <div>
+            <h3 style={{ fontSize:18, color:'var(--navy)' }}>{title}</h3>
+            <p style={{ color:'var(--text-2)', margin:'8px 0 0', fontSize:14.5, lineHeight:1.55 }}>{body}</p>
+          </div>
+          <div style={{ marginTop:'auto', fontFamily:'var(--font-mono)', fontSize:12, color:'var(--blue)', letterSpacing:'.04em', display:'inline-flex', alignItems:'center', gap:6 }}>
+            Open path
+            <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7h8m0 0L7.5 3.5M11 7l-3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+        </a>
+      );
+    }
+
+    function Participate() {
+      return (
+        <Fragment>
+          <SiteHeader active="participate"/>
+
+          <section className="page-hero">
+            <div className="hero-bg"/>
+            <div className="container" style={{position:'relative'}}>
+              <div className="page-hero__inner">
+                <div>
+                  <h1 className="page-hero__title">How to Participate</h1>
+                  <p className="page-hero__lead">
+                    Three ways of adoption and six ways to contribute. Start where you are, grow into the rest.
+                  </p>
+                  <div style={{display:'flex', gap:12, flexWrap:'wrap', marginTop:28}}>
+                    <a className="btn btn-secondary btn-lg" href="#use">Use</a>
+                    <a className="btn btn-secondary btn-lg" href="#contribute">Contribute</a>
+                    <a className="btn btn-secondary btn-lg" href="#contact">Become a Member</a>
+                  </div>
+                </div>
+                <div>
+                  <div className="frame" style={{padding:0, background:'#0B1A36', borderColor:'#0B1A36'}}>
+                    <div className="frame__topbar" style={{background:'#0B1A36'}}>
+                      <span className="dot"/><span className="dot"/><span className="dot"/>
+                      <span className="url" style={{background:'#152B4F', color:'#9DAEC9'}}>~/constructorfabric</span>
+                    </div>
+                    <pre style={{
+                      margin:0, padding:'22px 24px 26px', fontFamily:'var(--font-mono)', fontSize:13, lineHeight:1.7,
+                      color:'#C8D4E8', background:'#0B1A36', borderBottomLeftRadius:'inherit', borderBottomRightRadius:'inherit',
+                      whiteSpace:'pre-wrap', overflowWrap:'anywhere'
+                    }}>
+{`$ git clone  --recurse-submodules <repository-url>
+$ cd constructor-gears-rust
+$ make build      `}<span style={{color:'#6BA5F0'}}># Build libraries</span>{`
+$ make test       `}<span style={{color:'#6BA5F0'}}># Run tests</span>{`
+$ make example    `}<span style={{color:'#6BA5F0'}}># Run modkit example module</span>
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* USE */}
+          <section id="use" className="section section--white">
+            <div className="container">
+              <div className="section-head">
+                <div className="eyebrow">Use</div>
+                <h2>Start using Constructor Fabric elements today and share your feedback.</h2>
+              </div>
+              <ul className="bullets">
+                <li>Install Constructor tool to your repositories</li>
+                <li>Use Constructor Gears as building blocks for your projects</li>
+                <li>Deploy Constructor Insight and see how AI affects your organization's productivity</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* CONTRIBUTE */}
+          <section id="contribute" className="section section--soft">
+            <div className="container">
+              <div className="section-head">
+                <div className="eyebrow">Contribute</div>
+                <h2>Six ways to extend the fabric. Pick the one that fits your needs.</h2>
+              </div>
+              <ul className="bullets">
+                <li>Provide new skills, kits, and plugins for Constructor Studio tools</li>
+                <li>Improve Constructor Studio tools</li>
+                <li>Improve existing Constructor Gears</li>
+                <li>Develop new Constructor Gears from the Constructor Fabric roadmap</li>
+                <li>Propose and develop new Constructor Gears outside the roadmap</li>
+                <li>Implement integrations between Constructor Fabric and third-party systems</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* CONTACT */}
+          <section id="contact" className="section section--white">
+            <div className="container">
+              <div className="section-head">
+                <div className="eyebrow">Become a Member</div>
+                <h2>Contact us to become a Foundation member.</h2>
+                <div style={{display:'flex', gap:12, flexWrap:'wrap', marginTop:8}}>
+                  <a className="btn btn-primary btn-lg" href="mailto:contact@constructorfabric.org">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+                    contact@constructorfabric.org
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <CtaStart/>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Participate/>);
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView();
+      }, 0);
+    }
+  </script>
+</body>
+</html>
