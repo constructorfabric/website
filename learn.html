@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Learn — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="description" content="Courses to learn Constructor Fabric — from a C-level overview to building your first XaaS application with Constructor Studio and Constructor Gears, and how to contribute."/>
+<link rel="canonical" href="https://constructorfabric.org/learn.html"/>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://constructorfabric.org/learn.html"/>
+<meta property="og:title" content="Learn — Constructor Fabric"/>
+<meta property="og:description" content="Courses to learn Constructor Fabric — from a C-level overview to building your first XaaS application with Constructor Studio and Constructor Gears, and how to contribute."/>
+<meta property="og:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Learn — Constructor Fabric"/>
+<meta name="twitter:description" content="Courses to learn Constructor Fabric — from a C-level overview to building your first XaaS application with Constructor Studio and Constructor Gears, and how to contribute."/>
+<meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  .course-card { position:relative; background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px; box-shadow: var(--shadow-card); display:flex; flex-direction:column; gap:14px; }
+  .course-card__num { font-family: var(--font-mono); font-size:12px; letter-spacing:.14em; color: var(--blue); }
+  .course-card__title { font-size:22px; color: var(--navy); margin:0; }
+  .course-card__body { color: var(--text-2); margin:0; font-size:15.5px; line-height:1.6; }
+  .course-card__meta { margin-top:auto; padding-top:16px; border-top:1px solid var(--line-soft); display:flex; align-items:center; gap:10px; font-family: var(--font-mono); font-size:12.5px; letter-spacing:.04em; color: var(--text-2); }
+  .course-card__meta .pill { background: var(--blue-tint); color: var(--blue); padding:4px 10px; border-radius:999px; }
+  .course-card__cta { font-family: var(--font-mono); font-size:13px; letter-spacing:.04em; color: var(--blue); display:inline-flex; align-items:center; gap:6px; text-decoration:none; }
+  .course-card__cta:hover { text-decoration:underline; }
+</style>
+</head>
+<body data-screen-label="Learn">
+  <div id="root"></div>
+  <script type="text/babel" src="partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    function CourseCard({ n, title, body, availability, enrollHref }) {
+      return (
+        <div className="course-card">
+          <span className="course-card__num">Course 0{n}</span>
+          <h3 className="course-card__title">{title}</h3>
+          <p className="course-card__body">{body}</p>
+          <div className="course-card__meta">
+            {enrollHref ? (
+              <a className="course-card__cta" href={enrollHref} target="_blank" rel="noopener">
+                Enroll
+                <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7h8m0 0L7.5 3.5M11 7l-3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </a>
+            ) : (
+              <Fragment>
+                <span>Availability:</span>
+                <span className="pill">{availability}</span>
+              </Fragment>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function Learn() {
+      return (
+        <Fragment>
+          <SiteHeader active="learn"/>
+
+          <section className="page-hero">
+            <div className="hero-bg"/>
+            <div className="container" style={{position:'relative'}}>
+              <div className="page-hero__inner">
+                <div>
+                  <h1 className="page-hero__title">Learn Constructor Fabric</h1>
+                  <p className="page-hero__lead">
+                    You can take one or more courses to learn more about Constructor Fabric — from an overview for C-level executives to how to build your very first application using Constructor Studio and Constructor Gears to how to contribute.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="section section--white">
+            <div className="container">
+              <div className="grid-2" style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:24}}>
+                <CourseCard
+                  n={1}
+                  title="Constructor Studio"
+                  body="Learn how to use Constructor Studio to design and build your first XaaS application — from idea to PRD, to architecture, to design documents to decomposition into tasks to the actual code generation."
+                  availability="12-Jun-2026" />
+                <CourseCard
+                  n={2}
+                  title="Constructor Gears for Beginners"
+                  body="Learn how to use Constructor Gears in your XaaS application."
+                  availability="12-Jun-2026" />
+                <CourseCard
+                  n={3}
+                  title="Constructor Fabric: Overview for Executives"
+                  body="This course is designed for CEOs, CFOs, COOs, CTOs, CIOs, CPOs, founders, board members, investors, and senior leaders responsible for SaaS and XaaS growth, AI strategy, product execution, platform scalability, monetization, and enterprise value. The course provides a concise business view of why AI coding tools alone are not enough, why SaaS and XaaS companies need a stronger operating model, and how Constructor Fabric can support faster market execution, monetization velocity, operating leverage, M&A readiness, and a more durable competitive moat."
+                  enrollHref="https://constructorfabric.constructor.app/learn/courses/daec92db-91ab-4863-8104-ab75efa961cc" />
+                <CourseCard
+                  n={4}
+                  title="Constructor Gears for Contributors"
+                  body="Learn how can you contribute to Constructor Gears — from the enhancements of the existing Gears to the creation of a completely new Gears."
+                  availability="19-Jun-2026" />
+              </div>
+            </div>
+          </section>
+
+          <CtaStart/>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Learn/>);
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView();
+      }, 0);
+    }
+  </script>
+</body>
+</html>
