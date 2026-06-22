@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Try — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="description" content="Try Constructor Fabric hands-on — get a Code Server IDE with Constructor Fabric pre-installed and walk through the development flow."/>
+<link rel="canonical" href="https://constructorfabric.org/try.html"/>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://constructorfabric.org/try.html"/>
+<meta property="og:title" content="Try — Constructor Fabric"/>
+<meta property="og:description" content="Try Constructor Fabric hands-on — get a Code Server IDE with Constructor Fabric pre-installed and walk through the development flow."/>
+<meta property="og:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Try — Constructor Fabric"/>
+<meta name="twitter:description" content="Try Constructor Fabric hands-on — get a Code Server IDE with Constructor Fabric pre-installed and walk through the development flow."/>
+<meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  .trial-panel { display:grid; gap:32px; grid-template-columns:1fr; align-items:start; }
+  @media(min-width:960px) { .trial-panel { grid-template-columns:1.1fr 1fr; gap:56px; align-items:start; } }
+  .trial-form-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow-card); }
+  .trial-form label { display:block; font-size:14px; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .trial-form input { width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:10px; font-size:16px; font-family:var(--font-sans); outline:none; transition:border-color .15s; }
+  .trial-form input:focus { border-color:var(--blue-bright); box-shadow:0 0 0 3px rgba(0,101,227,.12); }
+  .trial-status { display:none; margin-top:16px; padding:14px 16px; border-radius:var(--radius-md); background:var(--blue-tint); color:var(--navy); font-size:15px; line-height:1.55; }
+  .trial-status.is-error { background:#FEE2E2; color:#991B1B; }
+  .trial-preview { background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow-card); overflow:hidden; }
+  .trial-preview__bar { display:flex; align-items:center; gap:8px; padding:10px 16px; border-bottom:1px solid var(--line-soft); background:var(--bg-soft); }
+  .trial-preview__bar .dot { width:9px; height:9px; border-radius:999px; background:var(--line); }
+  .trial-preview__bar span { font-size:13px; font-weight:600; color:var(--navy); }
+  .trial-preview__body { padding:24px; }
+  .trial-chip { display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:500; font-family:var(--font-mono); letter-spacing:.04em; background:var(--blue-tint); color:var(--blue); margin-bottom:16px; }
+  .trial-chip .dot { width:6px; height:6px; border-radius:999px; background:var(--blue-bright); }
+  .trial-preview h3 { font-size:17px; font-weight:600; margin-bottom:10px; color:var(--navy); }
+  .trial-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0; }
+  .trial-list li { display:flex; gap:10px; align-items:flex-start; padding:10px 0; font-size:14px; color:var(--text-2); line-height:1.5; border-bottom:1px solid var(--line-soft); }
+  .trial-list li:last-child { border-bottom:none; }
+  .trial-list li::before { content:""; flex:0 0 auto; margin-top:5px; width:6px; height:6px; border-radius:999px; background:var(--blue-bright); }
+  .mini-grid { display:grid; gap:16px; grid-template-columns:1fr; }
+  @media(min-width:600px) { .mini-grid { grid-template-columns:repeat(2,1fr); } }
+  .hero-screenshot { border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-frame); margin-top:32px; }
+  .hero-screenshot img { width:100%; display:block; }
+</style>
+</head>
+<body data-screen-label="Try">
+  <div id="root"></div>
+  <script type="text/babel" src="partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment, useState } = React;
+
+    const TRIAL_APP_ID = 'constructor-fabric';
+    const TRIAL_JPS = 'https://raw.githubusercontent.com/jelastic-jps/constructor-fabric/main/manifest.jps';
+    const PLATFORM_URL = 'https://app.vhc.virtuozzo.com';
+    const TRIAL_GROUP = 'constructor_fabric';
+
+    function registrationUrl() {
+      const platform = new URL(PLATFORM_URL);
+      const regHost = platform.hostname.replace(/^app\./, 'reg.');
+      return `${platform.protocol}//${regHost}/installapp`;
+    }
+
+    function buildTrialUrl(email) {
+      const target = new URL(registrationUrl());
+      target.searchParams.set('email', email.trim());
+      target.searchParams.set('id', TRIAL_APP_ID);
+      target.searchParams.set('jps', TRIAL_JPS);
+      target.searchParams.set('group', TRIAL_GROUP);
+      target.searchParams.set('iref', window.location.href);
+      target.searchParams.set('eref', document.referrer || '');
+      return target;
+    }
+
+    function TrialForm() {
+      const [email, setEmail] = useState('');
+      const [loading, setLoading] = useState(false);
+      const [status, setStatus] = useState(null);
+
+      async function submit(e) {
+        e.preventDefault();
+        const value = email.trim();
+        if (!/.+@.+\..+/.test(value)) {
+          setStatus({ type: 'error', text: 'Enter a valid work email to deploy.' });
+          return;
+        }
+        setLoading(true);
+        setStatus({ type: 'ok', text: 'Deployment request sent for ' + value + '...' });
+        try {
+          const response = await fetch(buildTrialUrl(value).toString(), { method: 'GET', mode: 'cors', credentials: 'omit' });
+          const text = await response.text();
+          let payload = null;
+          try { payload = JSON.parse(text); } catch (_) {}
+          const ok = payload && payload.result === 0 && payload.response && payload.response.result === 0;
+          if (!ok) {
+            const message = payload && payload.response && payload.response.error ? payload.response.error : text.slice(0, 240);
+            throw new Error(message || 'Trial request failed.');
+          }
+          setStatus({ type: 'ok', text: 'Deployment request accepted! Check your mailbox for the confirmation link from Virtuozzo Cloud. After confirmation, your 14-day trial will start. Have your OpenAI or Claude API token ready to activate the AI module in the IDE.' });
+        } catch (err) {
+          setStatus({ type: 'error', text: 'Trial request failed: ' + (err && err.message ? err.message : err) });
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      return (
+        <div className="trial-form-card">
+          <h3 style={{marginBottom:8}}>Start your journey here</h3>
+          <p style={{fontSize:15,color:'var(--text-2)',marginBottom:20}}>
+            Code Server virtual appliance with Constructor Fabric pre-installed. Bring your API token and walk through the development flow.
+          </p>
+          <form className="trial-form" onSubmit={submit}>
+            <label>Work email</label>
+            <input type="email" placeholder="you@company.com" value={email} onChange={e => setEmail(e.target.value)} required />
+            <button className="btn btn-primary btn-lg" type="submit" disabled={loading} style={{marginTop:16,width:'100%'}}>
+              {loading ? 'Deploying...' : 'Deploy Code Server virtual appliance'}
+            </button>
+          </form>
+          {status && (
+            <div className={'trial-status' + (status.type === 'error' ? ' is-error' : '')} style={{display:'block'}} role="status" aria-live="polite">
+              {status.text}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function TrialPreview() {
+      return (
+        <div className="trial-preview">
+          <div className="trial-preview__bar">
+            <span className="dot"/><span className="dot"/><span className="dot"/>
+            <span>Constructor Fabric IDE</span>
+          </div>
+          <div className="trial-preview__body">
+            <span className="trial-chip"><span className="dot"/>Ready after confirmation</span>
+            <h3>What you get</h3>
+            <ul className="trial-list">
+              <li>A Code Server IDE accessible directly in your browser.</li>
+              <li>Constructor Fabric workflow engine with guided trainer.</li>
+              <li>Bring your own OpenAI or Claude API token to activate AI.</li>
+              <li>Implement a real scenario: from PRD to features, tasks, and code.</li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    function TryPage() {
+      return (
+        <Fragment>
+          <SiteHeader active="try"/>
+
+          {/* HERO */}
+          <section className="page-hero">
+            <div className="hero-bg"/>
+            <div className="container">
+              <div className="page-hero__inner">
+                <div>
+                  <div className="eyebrow">Hands-on trial</div>
+                  <h1 className="page-hero__title">Try Constructor Fabric</h1>
+                  <p className="page-hero__lead">
+                    Get instant access to a Code Server IDE with Constructor Fabric. Bring your own API token and walk through the development flow.
+                  </p>
+
+                  <div className="hero-screenshot">
+                    <img src="assets/img/trainer-screenshot.jpg" alt="Constructor Fabric IDE with guided trainer"/>
+                  </div>
+                </div>
+                <TrialPreview/>
+              </div>
+            </div>
+          </section>
+
+          {/* TRIAL FORM + DETAILS */}
+          <section className="section section--white" id="start">
+            <div className="container">
+              <div className="trial-panel">
+                <div>
+                  <div className="eyebrow">What you get</div>
+                  <h2 style={{marginTop:0}}>A hands-on Constructor Fabric environment.</h2>
+                  <p className="lead" style={{marginTop:12}}>
+                    This page is for people who want to try the product hands-on. You get a Code Server IDE with Constructor Fabric pre-installed. Bring your own API token, open the trainer, and walk through the development flow.
+                  </p>
+                  <div style={{marginTop:32}}>
+                    <div className="mini-grid">
+                      <div className="card">
+                        <h3>Code Server IDE</h3>
+                        <p>A full VS Code environment in your browser — no local setup required.</p>
+                      </div>
+                      <div className="card">
+                        <h3>Guided Development Flow</h3>
+                        <p>Walk through a real scenario: create PRD, decompose features, generate tasks, and validate.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{marginTop:28}}>
+                    <h3 style={{fontSize:18,marginBottom:16}}>What you need to activate AI</h3>
+                    <div className="mini-grid">
+                      <div className="card">
+                        <h3>1. API Token</h3>
+                        <p>Enter your own OpenAI or Claude API key to activate the AI coding module — chat, autocomplete, and code generation.</p>
+                      </div>
+                      <div className="card">
+                        <h3>2. GitHub Account</h3>
+                        <p>Sign in with your GitHub account in the IDE to enable the AI assistant. Without this step, the AI module will not activate.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <TrialForm/>
+              </div>
+            </div>
+          </section>
+
+          {/* AFTER CONFIRMATION */}
+          <section className="section section--soft">
+            <div className="container">
+              <div style={{maxWidth:780}}>
+                <div className="eyebrow">After confirmation</div>
+                <h2 style={{marginTop:0}}>Open the IDE, sign in with GitHub, and follow the trainer</h2>
+                <p className="lead" style={{marginTop:14}}>
+                  The trainer walks you through a complete development cycle: create a PRD, decompose into features, generate tasks, and validate — powered by your own AI token.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <CtaStart/>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<TryPage/>);
+  </script>
+</body>
+</html>

@@ -73,6 +73,7 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
     { id: 'foundation', label: 'Foundation', href: 'foundation.html' },
     { id: 'participate', label: 'Participate', href: 'participate.html' },
     { id: 'learn', label: 'Learn', href: 'learn.html' },
+    { id: 'try', label: 'Try', href: 'try.html' },
   ];
   React.useEffect(() => {
     document.body.classList.toggle('no-scroll', open);
@@ -161,6 +162,7 @@ window.SiteFooter = function SiteFooter() {
               <li><a href="foundation.html">Foundation</a></li>
               <li><a href="participate.html">Participate</a></li>
               <li><a href="learn.html">Learn</a></li>
+              <li><a href="try.html">Try</a></li>
               <li><a href="https://github.com/constructorfabric" target="_blank" rel="noopener">GitHub</a></li>
             </ul>
           </div>
