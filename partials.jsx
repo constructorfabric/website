@@ -166,7 +166,7 @@ window.SiteFooter = function SiteFooter() {
           </div>
         </div>
         <div className="site-footer__bottom">
-          <span>© 2026 Constructor Fabric Foundation</span>
+          <span>Copyright © 2026 Constructor Fabric Foundation</span>
           <a href="privacy-policy.html" style={{color:'rgba(255,255,255,.62)'}}>Privacy Policy</a>
         </div>
       </div>
