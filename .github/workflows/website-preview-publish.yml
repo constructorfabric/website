@@ -138,10 +138,13 @@ jobs:
         with:
           app-id: ${{ vars.AUTOMATION_APP_ID }}
           private-key: ${{ secrets.AUTOMATION_APP_PRIVATE_KEY }}
-          # Owner and repository are split correctly per the v2 schema,
-          # resolved from the PREVIEW_REPOSITORY variable.
+          # Owner and repository are split correctly per the v2 schema.
+          # Token is scoped to both the preview repo (for clone/push) and
+          # the source repo (for PR comment). Fork PRs can't use the
+          # default GITHUB_TOKEN to comment on the PR — see the comment
+          # step below for why we need the App token there.
           owner: ${{ steps.repo.outputs.preview_owner }}
-          repositories: ${{ steps.repo.outputs.preview_name }}
+          repositories: ${{ steps.repo.outputs.preview_name }},${{ github.event.repository.name }}
 
       # App token is used for everything that writes to the preview repo.
       - name: Checkout preview repository
@@ -188,11 +191,14 @@ jobs:
           git push origin main
           echo "Pushed pr-${pr_number} to website-previews main"
 
-      # Back to the default GITHUB_TOKEN: comment on the source PR. We have
-      # issues: write permission in this repo.
+      # Use the App token here, not the default GITHUB_TOKEN. For fork PRs,
+      # the default GITHUB_TOKEN is locked to read-only by GitHub and cannot
+      # comment on the source PR ("Resource not accessible by integration
+      # (addComment)"). The App token is scoped to constructorfabric/website
+      # via the app_token step above and has Issues + PRs write access.
       - name: Comment on source PR with preview URL
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app_token.outputs.token }}
           PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
           PREVIEW_OWNER: ${{ steps.repo.outputs.preview_owner }}
           PREVIEW_NAME: ${{ steps.repo.outputs.preview_name }}
