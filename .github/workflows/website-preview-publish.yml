@@ -193,25 +193,37 @@ jobs:
 
       # Use the App token here, not the default GITHUB_TOKEN. For fork PRs,
       # the default GITHUB_TOKEN is locked to read-only by GitHub and cannot
-      # comment on the source PR ("Resource not accessible by integration
-      # (addComment)"). The App token is scoped to constructorfabric/website
-      # via the app_token step above and has Issues + PRs write access.
+      # comment on the source PR.
+      #
+      # We also bypass `gh pr comment` and use the REST API directly.
+      # `gh pr comment` uses the GraphQL `addComment` mutation, which fails
+      # for cross-repository (fork) PRs even with an App token scoped to
+      # the base repo, because GraphQL's PR object is owned by the head
+      # (fork) repo. The REST endpoint `POST /repos/{owner}/{repo}/issues/
+      # {n}/comments` writes to the issue thread on the base repo, which
+      # the App token on constructorfabric/website can authorize.
       - name: Comment on source PR with preview URL
         env:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
           PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
           PREVIEW_OWNER: ${{ steps.repo.outputs.preview_owner }}
           PREVIEW_NAME: ${{ steps.repo.outputs.preview_name }}
+          REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
           # GitHub Pages URL pattern for org/user pages: <owner>.github.io/<repo>/...
           preview_url="https://${PREVIEW_OWNER}.github.io/${PREVIEW_NAME}/pr-${PR_NUMBER}/"
           retention_days="${{ vars.PREVIEW_RETENTION_DAYS }}"
           retention_days="${retention_days:-30}"
-          printf '%s\n\n%s\n\n%s\n' \
+          comment_body="$(printf '%s\n\n%s\n\n%s' \
             "Preview deployment is ready:" \
             "${preview_url}" \
-            "This preview is built from the latest commit on this PR. It is regenerated automatically on every push. Old previews are cleaned up after ${retention_days} days." \
-            > /tmp/preview_comment.md
-          gh pr comment "${PR_NUMBER}" --repo "${{ github.repository }}" --body-file /tmp/preview_comment.md
+            "This preview is built from the latest commit on this PR. It is regenerated automatically on every push. Old previews are cleaned up after ${retention_days} days.")"
+          # REST API: posts a comment to the PR's issue thread in REPO.
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/${REPO}/issues/${PR_NUMBER}/comments" \
+            -f body="${comment_body}"
           echo "Posted preview URL to PR #${PR_NUMBER}"
