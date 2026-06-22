@@ -24,11 +24,6 @@ concurrency:
   group: website-production-deploy
   cancel-in-progress: true
 
-# Avoid deploying an out-of-date Pages environment if a newer run supersedes.
-environment:
-  name: github-pages
-  url: https://constructorfabric.org/
-
 jobs:
   build:
     name: Build production site
