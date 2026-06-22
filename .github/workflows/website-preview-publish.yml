@@ -4,14 +4,22 @@
 # IMPORTANT: this workflow does NOT check out PR code and does NOT execute any
 # code from the artifact. It treats the artifact as opaque static files only.
 # It runs in response to a successful Website PR CI run, uses a short-lived
-# GitHub App installation token, and writes only to the dedicated preview
-# repository.
+# GitHub App installation token to write to the preview repository, and uses
+# the default GITHUB_TOKEN to read from the source repository (download
+# artifact, post PR comment).
 #
 # Security model:
 #   - Triggered by workflow_run on Website PR CI (not by pull_request).
+#   - PR number is read from the artifact (preview-meta.json), not from
+#     workflow_run.pull_requests, which is unreliable (empty for fork PRs
+#     and some other contexts).
 #   - Uses actions/create-github-app-token@v2 with the AUTOMATION_APP_ID app,
-#     scoped to the PREVIEW_REPOSITORY only.
-#   - Pushes only to the preview repo, never to the source repo.
+#     scoped to the PREVIEW_REPOSITORY only. The App token is used only for
+#     cloning and pushing the preview repository.
+#   - The default GITHUB_TOKEN is used to download the artifact from the
+#     source repository and to comment on the source PR. It does NOT have
+#     write access to the source repository.
+#   - The publish workflow has no write permission on the source repository.
 
 name: Publish Website Preview
 
@@ -20,10 +28,15 @@ on:
     workflows: ["Website PR CI"]
     types: [completed]
 
-# Permissions in the SOURCE repo: we need pull-requests:read to find the PR
-# number, and issues:write to post the preview comment. We do NOT need
-# contents:write on this repo. The write happens in the preview repo using
-# the GitHub App token.
+# Permissions in the SOURCE repo:
+#   - actions: read     -> needed to access workflow artifacts via gh CLI
+#   - contents: read    -> required to clone via default token (unused here
+#                          but kept minimal and explicit)
+#   - pull-requests: read -> for gh pr comment (the default token scopes
+#                            to the current repo)
+#   - issues: write     -> to post the preview comment
+# We do NOT need contents: write on this repo. The preview-repo write uses
+# the GitHub App installation token, not the default GITHUB_TOKEN.
 permissions:
   actions: read
   contents: read
@@ -31,8 +44,10 @@ permissions:
   issues: write
 
 concurrency:
-  # Serialize publishing per PR to avoid races when CI retriggers.
-  group: website-preview-publish-pr-${{ github.event.workflow_run.pull_requests[0].number }}
+  # One publish per upstream CI run. The run id is unique per PR push, so
+  # two pushes to the same PR don't serialize on each other, but the same
+  # upstream run never publishes twice.
+  group: website-preview-publish-run-${{ github.event.workflow_run.id }}
   cancel-in-progress: false
 
 jobs:
@@ -42,38 +57,67 @@ jobs:
     timeout-minutes: 10
 
     # Only proceed when CI succeeded and the run was triggered by a PR.
+    # Note: github.event.workflow_run.event is reliable; only
+    # workflow_run.pull_requests[] is unreliable, which is why we don't
+    # try to extract the PR number from it.
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'pull_request'
 
     steps:
-      - name: Resolve PR number and context
-        id: context
+      # Default GITHUB_TOKEN is used here to read from the source repo.
+      - name: Download preview artifact from PR CI run
         env:
-          RUN_EVENT: ${{ github.event.workflow_run.event }}
-          RUN_NAME: ${{ github.event.workflow_run.name }}
-          PR_JSON: ${{ toJson(github.event.workflow_run.pull_requests) }}
-          PREVIEW_REPO_VAR: ${{ vars.PREVIEW_REPOSITORY }}
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_NAME: website-preview
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          echo "Run event: ${RUN_EVENT}"
-          echo "Run name:  ${RUN_NAME}"
-          echo "PRs in payload:"
-          echo "${PR_JSON}"
+          echo "Downloading artifact '${ARTIFACT_NAME}' from run ${RUN_ID} in ${REPO}"
+          gh run download "${RUN_ID}" \
+            --repo "${REPO}" \
+            --name "${ARTIFACT_NAME}" \
+            --dir ./_artifact
 
-          # The workflow_run payload includes pull_requests[] when the
-          # triggering workflow was a PR build. The PR number we want is
-          # the first one.
-          pr_number="$(echo "${PR_JSON}" | python3 -c 'import json,sys; d=json.load(sys.stdin); print((d or [{}])[0].get("number",""))')"
-          if [[ -z "${pr_number}" ]]; then
-            echo "Error: no pull request number found in workflow_run payload" >&2
+          # Verify the artifact is non-empty.
+          if [[ ! -d ./_artifact ]] || [[ -z "$(ls -A ./_artifact 2>/dev/null || true)" ]]; then
+            echo "Error: artifact is empty or missing" >&2
+            exit 1
+          fi
+          echo "Artifact downloaded:"
+          ls -la ./_artifact
+
+      - name: Read PR number from artifact
+        id: pr
+        run: |
+          set -euo pipefail
+          meta="./_artifact/preview-meta.json"
+          if [[ ! -f "${meta}" ]]; then
+            echo "Error: ${meta} not found in artifact" >&2
+            exit 1
+          fi
+          pr_number="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("pr_number",""))' "${meta}")"
+          if [[ -z "${pr_number}" || "${pr_number}" == "None" ]]; then
+            echo "Error: pr_number missing or null in ${meta}" >&2
+            cat "${meta}" >&2
+            exit 1
+          fi
+          if ! [[ "${pr_number}" =~ ^[0-9]+$ ]]; then
+            echo "Error: pr_number must be a positive integer (got '${pr_number}')" >&2
             exit 1
           fi
           echo "pr_number=${pr_number}" >> "$GITHUB_OUTPUT"
-          echo "Resolved PR number: ${pr_number}"
+          echo "Resolved PR number from artifact: ${pr_number}"
 
-          # Resolve preview repo from PREVIEW_REPOSITORY ("owner/name");
-          # default to constructorfabric/website-previews.
+      - name: Resolve preview repository
+        id: repo
+        env:
+          PREVIEW_REPO_VAR: ${{ vars.PREVIEW_REPOSITORY }}
+        run: |
+          set -euo pipefail
+          # PREVIEW_REPOSITORY is "owner/name"; default to
+          # constructorfabric/website-previews.
           preview_repo="${PREVIEW_REPO_VAR:-constructorfabric/website-previews}"
           preview_owner="${preview_repo%%/*}"
           preview_name="${preview_repo##*/}"
@@ -96,35 +140,14 @@ jobs:
           private-key: ${{ secrets.AUTOMATION_APP_PRIVATE_KEY }}
           # Owner and repository are split correctly per the v2 schema,
           # resolved from the PREVIEW_REPOSITORY variable.
-          owner: ${{ steps.context.outputs.preview_owner }}
-          repositories: ${{ steps.context.outputs.preview_name }}
+          owner: ${{ steps.repo.outputs.preview_owner }}
+          repositories: ${{ steps.repo.outputs.preview_name }}
 
-      - name: Download preview artifact from PR CI run
-        env:
-          GH_TOKEN: ${{ steps.app_token.outputs.token }}
-          ARTIFACT_NAME: website-preview-pr-${{ steps.context.outputs.pr_number }}
-          RUN_ID: ${{ github.event.workflow_run.id }}
-          REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          echo "Downloading artifact '${ARTIFACT_NAME}' from run ${RUN_ID} in ${REPO}"
-          gh run download "${RUN_ID}" \
-            --repo "${REPO}" \
-            --name "${ARTIFACT_NAME}" \
-            --dir ./_artifact
-
-          # Verify the artifact is non-empty.
-          if [[ ! -d ./_artifact ]] || [[ -z "$(ls -A ./_artifact 2>/dev/null || true)" ]]; then
-            echo "Error: artifact is empty or missing" >&2
-            exit 1
-          fi
-          echo "Artifact downloaded:"
-          ls -la ./_artifact
-
+      # App token is used for everything that writes to the preview repo.
       - name: Checkout preview repository
         env:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
-          PREVIEW_REPO: ${{ steps.context.outputs.preview_repo }}
+          PREVIEW_REPO: ${{ steps.repo.outputs.preview_repo }}
         run: |
           set -euo pipefail
           # Use the App token; do NOT use the default GITHUB_TOKEN.
@@ -138,7 +161,7 @@ jobs:
       - name: Copy artifact into pr-<n>/
         run: |
           set -euo pipefail
-          pr_number="${{ steps.context.outputs.pr_number }}"
+          pr_number="${{ steps.pr.outputs.pr_number }}"
           target="./_preview_repo/pr-${pr_number}"
           rm -rf "${target}"
           mkdir -p "${target}"
@@ -154,7 +177,7 @@ jobs:
         run: |
           set -euo pipefail
           cd ./_preview_repo
-          pr_number="${{ steps.context.outputs.pr_number }}"
+          pr_number="${{ steps.pr.outputs.pr_number }}"
           git add "pr-${pr_number}"
           # If nothing changed (extremely unlikely after rm -rf), skip.
           if git diff --cached --quiet; then
@@ -165,12 +188,14 @@ jobs:
           git push origin main
           echo "Pushed pr-${pr_number} to website-previews main"
 
+      # Back to the default GITHUB_TOKEN: comment on the source PR. We have
+      # issues: write permission in this repo.
       - name: Comment on source PR with preview URL
         env:
-          GH_TOKEN: ${{ steps.app_token.outputs.token }}
-          PR_NUMBER: ${{ steps.context.outputs.pr_number }}
-          PREVIEW_OWNER: ${{ steps.context.outputs.preview_owner }}
-          PREVIEW_NAME: ${{ steps.context.outputs.preview_name }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
+          PREVIEW_OWNER: ${{ steps.repo.outputs.preview_owner }}
+          PREVIEW_NAME: ${{ steps.repo.outputs.preview_name }}
         run: |
           set -euo pipefail
           # GitHub Pages URL pattern for org/user pages: <owner>.github.io/<repo>/...

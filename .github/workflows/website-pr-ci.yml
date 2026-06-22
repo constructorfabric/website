@@ -88,7 +88,10 @@ jobs:
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
-          name: website-preview-pr-${{ github.event.pull_request.number }}
+          # Fixed name (no PR number): the publish workflow reads the PR
+          # number from the artifact itself, since workflow_run.pull_requests
+          # can be empty (notably for fork PRs).
+          name: website-preview
           path: ./_site
           if-no-files-found: error
           retention-days: 30
