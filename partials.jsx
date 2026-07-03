@@ -76,6 +76,7 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
     /* Temporarily hidden — restore by uncommenting
     { id: 'try', label: 'Try', href: 'try.html' },
     */
+    { id: 'about', label: 'About', href: 'about.html' },
   ];
   React.useEffect(() => {
     document.body.classList.toggle('no-scroll', open);

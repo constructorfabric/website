@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>About — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="description" content="Why Constructor Fabric? The name reflects both the intellectual foundations of the project — from von Neumann's Universal Constructor to Constructor Theory — and its practical mission of weaving the software lifecycle into a single, coherent system."/>
+<link rel="canonical" href="https://constructorfabric.org/about.html"/>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://constructorfabric.org/about.html"/>
+<meta property="og:title" content="About — Constructor Fabric"/>
+<meta property="og:description" content="Why Constructor Fabric? The name reflects both the intellectual foundations of the project and its practical mission."/>
+<meta property="og:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="About — Constructor Fabric"/>
+<meta name="twitter:description" content="Why Constructor Fabric? The name reflects both the intellectual foundations of the project and its practical mission."/>
+<meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  .about-prose { max-width: 72ch; }
+  .about-prose p { color: var(--text-2); font-size: 16.5px; line-height: 1.75; margin: 0 0 22px; }
+  .about-prose p:last-child { margin-bottom: 0; }
+  /* Tighten the hero-to-text gap on this page: the text is a direct
+     continuation of the heading, not a separate content block. */
+  .page-hero--compact { padding-bottom: 12px; }
+  .section--about { padding-top: 24px; }
+  @media (min-width: 768px) {
+    .page-hero--compact { padding-bottom: 16px; }
+    .section--about { padding-top: 28px; }
+  }
+  @media (min-width: 1100px) {
+    .section--about { padding-top: 32px; }
+  }
+</style>
+</head>
+<body data-screen-label="About">
+  <div id="root"></div>
+  <script type="text/babel" src="partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    function About() {
+      return (
+        <Fragment>
+          <SiteHeader active="about"/>
+
+          <section className="page-hero page-hero--compact">
+            <div className="hero-bg"/>
+            <div className="container" style={{position:'relative'}}>
+              <div className="page-hero__inner">
+                <div>
+                  <h1 className="page-hero__title">Why Constructor Fabric?</h1>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="section section--white section--about">
+            <div className="container">
+              <div className="about-prose">
+                <p>
+                  The name <strong>Constructor Fabric</strong> reflects both the intellectual foundations of the project and its
+                  practical mission.
+                </p>
+                <p>
+                  The word <strong>Constructor</strong> is inspired by the concept of the <em>Universal Constructor</em> introduced by
+                  mathematician and computer pioneer John von Neumann. Von Neumann envisioned a machine capable of
+                  constructing other machines from a description of their design—a foundational idea that anticipated
+                  modern software, automation, and self-reproducing systems. Decades later, physicist David Deutsch
+                  expanded this line of thinking through <em>Constructor Theory</em>, a framework that describes the world in
+                  terms of what transformations are possible and what systems can cause them. Together, these ideas
+                  point toward a future in which complex systems are created, evolved, and improved through
+                  increasingly autonomous processes.
+                </p>
+                <p>
+                  Software development is, fundamentally, a process of construction. Requirements become designs,
+                  designs become code, code becomes systems, and systems evolve through operation and feedback. Yet
+                  the tools supporting this lifecycle remain fragmented across planning systems, repositories, build
+                  pipelines, deployment platforms, observability stacks, and human workflows. The result is friction,
+                  duplication, and loss of context at every transition.
+                </p>
+                <p>
+                  The word <strong>Fabric</strong> represents our goal of weaving these disconnected stages into a single,
+                  coherent system. A fabric is not a single thread but a structure formed by many threads working
+                  together. Constructor Fabric connects ideas, requirements, architecture, code, testing, deployment,
+                  operations, and learning into a continuous and traceable flow. Rather than treating software
+                  delivery as a sequence of isolated activities, we view it as an integrated construction process.
+                </p>
+                <p>
+                  Constructor Fabric is both a platform and an open ecosystem dedicated to advancing the state of
+                  software construction. Our mission is to provide the connective tissue that links people, tools,
+                  agents, and systems, enabling organizations and communities to build software with greater speed,
+                  reliability, and intelligence. In this sense, Constructor Fabric is not merely another development
+                  tool—it is an effort to create the fabric through which modern software can be continuously
+                  conceived, constructed, and evolved.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <CtaStart/>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<About/>);
+  </script>
+</body>
+</html>
