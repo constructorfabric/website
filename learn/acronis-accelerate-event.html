@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Acronis Accelerate: The Journey to Autonomous IT — Constructor Fabric</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="description" content="Join the live Acronis Accelerate event on July 30 — learn to build applications with Constructor Fabric and Acronis Cyber Frame, qualify for free developer tools, and reach 500M SMBs."/>
+<link rel="canonical" href="https://constructorfabric.org/learn/acronis-accelerate-event.html"/>
+<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg"/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://constructorfabric.org/learn/acronis-accelerate-event.html"/>
+<meta property="og:title" content="Acronis Accelerate: The Journey to Autonomous IT — Constructor Fabric"/>
+<meta property="og:description" content="Join the live Acronis Accelerate event on July 30 — learn to build applications with Constructor Fabric and Acronis Cyber Frame, qualify for free developer tools, and reach 500M SMBs."/>
+<meta property="og:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Acronis Accelerate: The Journey to Autonomous IT — Constructor Fabric"/>
+<meta name="twitter:description" content="Join the live Acronis Accelerate event on July 30 — learn to build applications with Constructor Fabric and Acronis Cyber Frame, qualify for free developer tools, and reach 500M SMBs."/>
+<meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
+<link rel="stylesheet" href="../styles.css"/>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  .roadmap { display:flex; flex-direction:column; gap:0; margin-top:8px; }
+  .roadmap__step { display:flex; align-items:center; gap:16px; flex:0 0 auto; }
+  .roadmap__node { flex:0 0 auto; width:40px; height:40px; border-radius:999px; background:var(--navy); color:#fff; font-family:var(--font-mono); font-size:15px; font-weight:600; display:flex; align-items:center; justify-content:center; }
+  .roadmap__label { font-weight:500; color:var(--navy); font-size:15.5px; padding:12px 0; }
+  .roadmap__connector { width:2px; height:24px; background:var(--line); margin-left:19px; flex:0 0 auto; }
+  @media (min-width:1024px) {
+    .roadmap { flex-direction:row; align-items:flex-start; }
+    .roadmap__step { flex-direction:column; text-align:center; gap:12px; }
+    .roadmap__label { padding:0; max-width:130px; }
+    .roadmap__connector { width:auto; height:2px; flex:1 1 auto; min-width:20px; margin:19px 4px 0; }
+  }
+  .faq-item { padding:22px 0; border-top:1px solid var(--line-soft); }
+  .faq-item:first-child { border-top:none; padding-top:0; }
+  .faq-item__q { color:var(--navy); margin-bottom:8px; }
+  .faq-item__a { color:var(--text-2); margin:0; font-size:15px; line-height:1.6; }
+  .get-card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:28px; box-shadow:var(--shadow-card); }
+</style>
+</head>
+<body data-screen-label="Acronis Accelerate Event">
+  <div id="root"></div>
+  <script type="text/babel" src="../partials.jsx"></script>
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    function RegisterButtons({ onNavy = false, size = 'lg' }) {
+      const primaryClass = onNavy ? 'btn-on-navy-primary' : 'btn-primary';
+      const secondaryClass = onNavy ? 'btn-on-navy-secondary' : 'btn-secondary';
+      return (
+        <div style={{display:'flex', gap:12, flexWrap:'wrap'}}>
+          <a className={`btn ${primaryClass} btn-${size}`} href="https://acronis.events/event/july-2026-emea/" target="_blank" rel="noopener">
+            Register — EMEA (8:00 AM, July 30)
+          </a>
+          <a className={`btn ${secondaryClass} btn-${size}`} href="https://acronis.events/event/july-2026-nam/" target="_blank" rel="noopener">
+            Register — NAM (6:00 PM, July 30)
+          </a>
+        </div>
+      );
+    }
+
+    function LearnItem({ title }) {
+      return (
+        <div style={{ display:'flex', gap:14, alignItems:'flex-start', padding:'18px 0', borderTop: '1px solid var(--line-soft)' }}>
+          <span className="check-badge" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3.5 8.2 6.5 11 12.5 5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+          <div style={{ color:'var(--navy)', fontWeight:500, fontSize:15.5, lineHeight:1.45 }}>{title}</div>
+        </div>
+      );
+    }
+
+    function GetCard({ title, body }) {
+      return (
+        <div className="get-card">
+          <h3 style={{marginTop:6, fontSize:19}}>{title}</h3>
+          <p style={{marginTop:10, color:'var(--text-2)', fontSize:15, lineHeight:1.55}}>{body}</p>
+        </div>
+      );
+    }
+
+    function Roadmap({ steps }) {
+      return (
+        <div className="roadmap">
+          {steps.map((label, i) => (
+            <Fragment key={i}>
+              <div className="roadmap__step">
+                <div className="roadmap__node">{i + 1}</div>
+                <div className="roadmap__label">{label}</div>
+              </div>
+              {i < steps.length - 1 && <div className="roadmap__connector"/>}
+            </Fragment>
+          ))}
+        </div>
+      );
+    }
+
+    function FaqItem({ q, a }) {
+      return (
+        <div className="faq-item">
+          <h4 className="faq-item__q">{q}</h4>
+          <p className="faq-item__a">{a}</p>
+        </div>
+      );
+    }
+
+    function AcronisAccelerateEvent() {
+      return (
+        <Fragment>
+          <SiteHeader active="acronis-accelerate-event"/>
+
+          {/* HERO — plain navy background, no photo */}
+          <section className="section section--navy">
+            <div className="container">
+              <div style={{maxWidth:720}}>
+                <span className="eyebrow-chip"><span className="dot"/>LIVE ONLINE EVENT · JULY 30</span>
+                <h1 style={{marginTop:20}}>The Journey to Autonomous IT starts with Constructor Fabric.</h1>
+                <p className="lead" style={{color:'rgba(255,255,255,.78)', marginTop:18}}>
+                  Learn to build applications with AI, get professional dev tools free once you qualify, and turn what you build into real income, real jobs, or your own business — for a market of 500 million SMBs.
+                </p>
+                <div style={{marginTop:28}}>
+                  <RegisterButtons onNavy size="lg"/>
+                </div>
+                <p style={{marginTop:16, fontSize:13, color:'rgba(255,255,255,.6)'}}>Free. 1 hour. Open to all.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* WHY THIS MATTERS */}
+          <section className="section section--soft">
+            <div className="container">
+              <div className="section-head">
+                <div className="eyebrow">Opportunity</div>
+                <h2>Build for a market of 500 million businesses.</h2>
+                <p>Small and medium-sized businesses make up roughly 70% of the world's target market — and there are 500 million of them, reachable through a network of 300,000 managed service providers. That's the audience you can build for. Not a shelved side project — real software, for real businesses, with a real path to get it in front of them.</p>
+              </div>
+              <p style={{color:'var(--text-muted)', fontSize:14, marginBottom:16}}>Save your seat for July 30.</p>
+              <RegisterButtons/>
+            </div>
+          </section>
+
+          {/* WHAT YOU'LL LEARN */}
+          <section className="section section--white">
+            <div className="container">
+              <div className="section-head">
+                <h2>One event. Five things you'll walk away knowing.</h2>
+              </div>
+              <div>
+                <LearnItem title="How to build applications using Constructor Fabric and Acronis Cyber Frame"/>
+                <LearnItem title="How to qualify for free developer infrastructure"/>
+                <LearnItem title="How to join the Acronis partner ecosystem"/>
+                <LearnItem title="How to monetize applications through the partner channel"/>
+                <LearnItem title="What career paths open up with MSPs and service providers"/>
+              </div>
+              <p style={{color:'var(--text-muted)', fontSize:14, margin:'28px 0 16px'}}>Ready to walk away with all five?</p>
+              <RegisterButtons/>
+            </div>
+          </section>
+
+          {/* WHAT YOU GET */}
+          <section className="section section--soft">
+            <div className="container">
+              <div className="section-head">
+                <h2>Here's what's actually on the table.</h2>
+              </div>
+              <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:24}}>
+                <GetCard title="Training" body="Learn to build applications with AI, hands-on, using Constructor Fabric."/>
+                <GetCard title="A professional dev environment" body="Acronis Cyber Frame, worth about $1,000/year, free once you qualify."/>
+                <GetCard title="Tools & infrastructure" body="Everything you need to build, at no cost."/>
+                <GetCard title="Distribution & monetization" body="Access to the Acronis partner ecosystem to get your app in front of real businesses."/>
+                <GetCard title="A career pathway" body="Into an MSP or service provider role, or toward launching your own software or business."/>
+              </div>
+              <p style={{color:'var(--text-muted)', fontSize:14, margin:'28px 0 16px'}}>See it for yourself on July 30.</p>
+              <RegisterButtons/>
+            </div>
+          </section>
+
+          {/* HOW IT WORKS */}
+          <section className="section section--white">
+            <div className="container">
+              <div className="section-head">
+                <h2>The path from "just attending" to fully set up.</h2>
+                <p>Attending is where it starts, not where it ends.</p>
+              </div>
+              <Roadmap steps={[
+                'Attend the event',
+                'Complete online learning',
+                'Pass certification',
+                'Get approved',
+                'Get access — free dev environment unlocked',
+              ]}/>
+              <p style={{color:'var(--text-muted)', fontSize:14, margin:'32px 0 16px'}}>Take the first step — register for the event.</p>
+              <RegisterButtons/>
+            </div>
+          </section>
+
+          {/* WHO'S BEHIND THIS */}
+          <section className="section section--soft">
+            <div className="container">
+              <div className="section-head" style={{marginBottom:0}}>
+                <h2>Who's behind this.</h2>
+                <p>Acronis Accelerate is hosted by Acronis CEO JJ Jager, with guest speakers including Constructor's own Serg Bell, Chief Constructor and founder of Acronis, alongside other industry leaders in AI and managed services.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section className="section section--white">
+            <div className="container" style={{maxWidth:820}}>
+              <div className="section-head">
+                <h2>Frequently asked questions</h2>
+              </div>
+              <div>
+                <FaqItem q="Is this free?" a="Yes. Attending the event is free, and the professional dev environment is free once you complete the qualification steps."/>
+                <FaqItem q="Do I need experience to attend?" a="No prior experience with Constructor Fabric or Acronis is required — the event is designed to introduce you to both."/>
+                <FaqItem q="What happens after I attend?" a="You'll get access to online learning and a certification path. Completing that and getting approved unlocks your free dev environment."/>
+                <FaqItem q="Which session should I join — EMEA or NAM?" a="The content is identical in both sessions. Pick whichever time zone works best for your schedule."/>
+                <FaqItem q="Do I need to be a student to attend?" a="No — this event and the developer program are open to students, early-career developers, and anyone interested in building software with AI. It's especially valuable if you're early in your career or still in school, but it's not limited to that."/>
+              </div>
+            </div>
+          </section>
+
+          {/* START NOW — secondary path */}
+          <section className="section section--soft">
+            <div className="container">
+              <div className="section-head" style={{marginBottom:24}}>
+                <h2 style={{fontSize:'var(--fs-h3)'}}>Don't want to wait until July 30?</h2>
+                <p>Constructor Fabric is open-source and free to explore right now.</p>
+              </div>
+              <a className="btn btn-primary btn-lg" href="https://github.com/constructorfabric/" target="_blank" rel="noopener">
+                <GitHubIcon size={16}/>Explore Constructor Fabric on GitHub →
+              </a>
+            </div>
+          </section>
+
+          {/* FINAL CTA */}
+          <section className="section--navy" style={{padding:'80px 0'}}>
+            <div className="container">
+              <div className="cta-start">
+                <div>
+                  <h2 style={{color:'#fff'}}>Your next real project starts July 30.</h2>
+                </div>
+                <div className="cta-start__actions">
+                  <RegisterButtons onNavy size="lg"/>
+                </div>
+              </div>
+              <p style={{marginTop:24, fontSize:13, color:'rgba(255,255,255,.6)'}}>Free. Open to everyone. No experience required.</p>
+            </div>
+          </section>
+
+          <SiteFooter/>
+        </Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<AcronisAccelerateEvent/>);
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView();
+      }, 0);
+    }
+  </script>
+</body>
+</html>

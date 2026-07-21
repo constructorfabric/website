@@ -68,15 +68,15 @@ window.GitHubIcon = function GitHubIcon({ size = 18 }) {
 window.SiteHeader = function SiteHeader({ active = 'home' }) {
   const [open, setOpen] = React.useState(false);
   const items = [
-    { id: 'home', label: 'Home', href: 'index.html' },
-    { id: 'elements', label: 'Elements', href: 'elements.html' },
-    { id: 'foundation', label: 'Foundation', href: 'foundation.html' },
-    { id: 'participate', label: 'Participate', href: 'participate.html' },
-    { id: 'learn', label: 'Learn', href: 'learn.html' },
+    { id: 'home', label: 'Home', href: '/index.html' },
+    { id: 'elements', label: 'Elements', href: '/elements.html' },
+    { id: 'foundation', label: 'Foundation', href: '/foundation.html' },
+    { id: 'participate', label: 'Participate', href: '/participate.html' },
+    { id: 'learn', label: 'Learn', href: '/learn.html' },
     /* Temporarily hidden — restore by uncommenting
-    { id: 'try', label: 'Try', href: 'try.html' },
+    { id: 'try', label: 'Try', href: '/try.html' },
     */
-    { id: 'about', label: 'About', href: 'about.html' },
+    { id: 'about', label: 'About', href: '/about.html' },
   ];
   React.useEffect(() => {
     document.body.classList.toggle('no-scroll', open);
@@ -87,7 +87,7 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
     <React.Fragment>
       <header className="site-header">
         <div className="container site-header__inner">
-          <a className="brand" href="index.html">
+          <a className="brand" href="/index.html">
             <span className="brand__mark"><BrandMark/></span>
             <span>Constructor Fabric</span>
           </a>
@@ -112,7 +112,7 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
 
       <div className={'drawer' + (open ? ' is-open' : '')}>
         <div className="drawer__top">
-          <a className="brand" href="index.html" style={{color:'#fff'}}>
+          <a className="brand" href="/index.html" style={{color:'#fff'}}>
             <span className="brand__mark"><BrandMark light/></span>
             <span>Constructor Fabric</span>
           </a>
@@ -147,7 +147,7 @@ window.SiteFooter = function SiteFooter() {
       <div className="container">
         <div className="site-footer__grid">
           <div>
-            <a className="brand" href="index.html" style={{color:'#fff'}}>
+            <a className="brand" href="/index.html" style={{color:'#fff'}}>
               <span className="brand__mark"><BrandMark light/></span>
               <span>Constructor Fabric</span>
             </a>
@@ -160,19 +160,19 @@ window.SiteFooter = function SiteFooter() {
           <div>
             <h4>Elements</h4>
             <ul>
-              <li><a href="elements.html#studio">Constructor Studio</a></li>
-              <li><a href="elements.html#insight">Constructor Insight</a></li>
-              <li><a href="elements.html#gears">Constructor Gears</a></li>
+              <li><a href="/elements.html#studio">Constructor Studio</a></li>
+              <li><a href="/elements.html#insight">Constructor Insight</a></li>
+              <li><a href="/elements.html#gears">Constructor Gears</a></li>
             </ul>
           </div>
           <div>
             <h4>Resources</h4>
             <ul>
-              <li><a href="foundation.html">Foundation</a></li>
-              <li><a href="participate.html">Participate</a></li>
-              <li><a href="learn.html">Learn</a></li>
+              <li><a href="/foundation.html">Foundation</a></li>
+              <li><a href="/participate.html">Participate</a></li>
+              <li><a href="/learn.html">Learn</a></li>
               {/* Temporarily hidden — restore by uncommenting
-              <li><a href="try.html">Try</a></li>
+              <li><a href="/try.html">Try</a></li>
               */}
               <li><a href="https://github.com/constructorfabric" target="_blank" rel="noopener">GitHub</a></li>
             </ul>
@@ -180,7 +180,7 @@ window.SiteFooter = function SiteFooter() {
         </div>
         <div className="site-footer__bottom">
           <span>© 2026 Constructor Fabric Foundation</span>
-          <a href="privacy-policy.html" style={{color:'rgba(255,255,255,.62)'}}>Privacy Policy</a>
+          <a href="/privacy-policy.html" style={{color:'rgba(255,255,255,.62)'}}>Privacy Policy</a>
         </div>
       </div>
     </footer>

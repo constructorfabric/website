@@ -38,6 +38,16 @@
   <script type="text/babel">
     const { Fragment } = React;
 
+    function ElementLinkCard({ title, body, href, linkLabel = 'Read more →' }) {
+      return (
+        <a className="link-card" href={href}>
+          <h3 style={{color:'var(--navy)', marginTop:8}}>{title}</h3>
+          <p style={{color:'var(--text-2)', margin:0, fontSize:15, lineHeight:1.55}}>{body}</p>
+          <span className="link-card__arrow">{linkLabel}</span>
+        </a>
+      );
+    }
+
     function CourseCard({ n, title, body, availability, enrollHref }) {
       return (
         <div className="course-card">
@@ -109,6 +119,11 @@
                   title="Constructor Gears for Contributors"
                   body="Learn how can you contribute to Constructor Gears — from the enhancements of the existing Gears to the creation of a completely new Gears."
                   availability="Coming Soon ..." />
+                <ElementLinkCard
+                  title="Acronis Accelerate: The Journey to Autonomous IT"
+                  body="Join a live virtual event where Constructor Fabric is introduced as part of Acronis's Autonomous IT platform — learn to build applications with AI, qualify for free dev infrastructure, and reach a market of 500 million SMBs."
+                  href="learn/acronis-accelerate-event.html"
+                  linkLabel="Learn more →" />
               </div>
             </div>
           </section>
