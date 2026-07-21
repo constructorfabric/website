@@ -6,7 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="description" content="Join the live Acronis Accelerate event on July 30 — learn to build applications with Constructor Fabric and Acronis Cyber Frame, qualify for free developer tools, and reach 500M SMBs."/>
 <link rel="canonical" href="https://constructorfabric.org/learn/acronis-accelerate-event.html"/>
-<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg"/>
+<script>
+  /* This page lives one directory below the repo root. In production there is
+     no base tag, so repo-relative assets need a "../" prefix. PR previews
+     inject a base tag pointing at /website-previews/pr-N/ (see
+     .github/scripts/build.sh), which resolves ALL relative references —
+     including "../" ones — against that base instead of this document's own
+     path, so "../" would escape one level too far. Detect which case we're
+     in and write the right prefix. */
+  var __root = document.querySelector('base') ? '' : '../';
+  document.write('<link rel="icon" type="image/svg+xml" href="' + __root + 'assets/img/favicon.svg"/>');
+</script>
 <link rel="preconnect" href="https://unpkg.com" crossorigin/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://constructorfabric.org/learn/acronis-accelerate-event.html"/>
@@ -17,7 +27,7 @@
 <meta name="twitter:title" content="Acronis Accelerate: The Journey to Autonomous IT — Constructor Fabric"/>
 <meta name="twitter:description" content="Join the live Acronis Accelerate event on July 30 — learn to build applications with Constructor Fabric and Acronis Cyber Frame, qualify for free developer tools, and reach 500M SMBs."/>
 <meta name="twitter:image" content="https://constructorfabric.org/assets/img/og-image.svg"/>
-<link rel="stylesheet" href="../styles.css"/>
+<script>document.write('<link rel="stylesheet" href="' + __root + 'styles.css"/>');</script>
 <script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
@@ -42,7 +52,7 @@
 </head>
 <body data-screen-label="Acronis Accelerate Event">
   <div id="root"></div>
-  <script type="text/babel" src="../partials.jsx"></script>
+  <script>document.write('<script type="text/babel" src="' + __root + 'partials.jsx"><\/script>');</script>
   <script type="text/babel">
     const { Fragment } = React;
 
