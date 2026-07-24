@@ -82,9 +82,7 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
     { id: 'foundation', label: 'Foundation', href: SITE_ROOT + 'foundation.html' },
     { id: 'participate', label: 'Participate', href: SITE_ROOT + 'participate.html' },
     { id: 'learn', label: 'Learn', href: SITE_ROOT + 'learn.html' },
-    /* Temporarily hidden — restore by uncommenting
     { id: 'try', label: 'Try', href: SITE_ROOT + 'try.html' },
-    */
     { id: 'about', label: 'About', href: SITE_ROOT + 'about.html' },
   ];
   React.useEffect(() => {
@@ -180,9 +178,7 @@ window.SiteFooter = function SiteFooter() {
               <li><a href={SITE_ROOT + 'foundation.html'}>Foundation</a></li>
               <li><a href={SITE_ROOT + 'participate.html'}>Participate</a></li>
               <li><a href={SITE_ROOT + 'learn.html'}>Learn</a></li>
-              {/* Temporarily hidden — restore by uncommenting
               <li><a href={SITE_ROOT + 'try.html'}>Try</a></li>
-              */}
               <li><a href="https://github.com/constructorfabric" target="_blank" rel="noopener">GitHub</a></li>
             </ul>
           </div>
