@@ -78,11 +78,11 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
   const [open, setOpen] = React.useState(false);
   const items = [
     { id: 'home', label: 'Home', href: SITE_ROOT + 'index.html' },
+    { id: 'try', label: 'Try', href: SITE_ROOT + 'try.html' },
     { id: 'elements', label: 'Elements', href: SITE_ROOT + 'elements.html' },
     { id: 'foundation', label: 'Foundation', href: SITE_ROOT + 'foundation.html' },
     { id: 'participate', label: 'Participate', href: SITE_ROOT + 'participate.html' },
     { id: 'learn', label: 'Learn', href: SITE_ROOT + 'learn.html' },
-    { id: 'try', label: 'Try', href: SITE_ROOT + 'try.html' },
     { id: 'about', label: 'About', href: SITE_ROOT + 'about.html' },
   ];
   React.useEffect(() => {
