@@ -179,7 +179,6 @@ window.SiteFooter = function SiteFooter() {
               <li><a href={SITE_ROOT + 'participate.html'}>Participate</a></li>
               <li><a href={SITE_ROOT + 'learn.html'}>Learn</a></li>
               <li><a href={SITE_ROOT + 'try.html'}>Try</a></li>
-              <li><a href="https://github.com/constructorfabric" target="_blank" rel="noopener">GitHub</a></li>
             </ul>
           </div>
         </div>
@@ -507,7 +506,7 @@ window.CtaStart = function CtaStart() {
             <p style={{color:'rgba(255,255,255,.78)', fontSize:'var(--fs-lead)', lineHeight:1.55, marginTop:14}}>Use · Contribute · Become a Member</p>
           </div>
           <div className="cta-start__actions">
-            <a className="btn btn-on-navy-primary btn-lg" href="https://github.com/constructorfabric/"><GitHubIcon size={16}/>GitHub</a>
+            <a className="btn btn-on-navy-primary btn-lg" href="https://pass.cfabric.org">Join as a Contributor →</a>
             <a className="btn btn-on-navy-secondary btn-lg" href="mailto:contact@constructorfabric.org">Contact us</a>
           </div>
         </div>
