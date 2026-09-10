@@ -142,21 +142,51 @@ window.GitHubIcon = function GitHubIcon({ size = 18 }) {
 
 window.SiteHeader = function SiteHeader({ active = 'home' }) {
   const [open, setOpen] = React.useState(false);
-  const [spinDirection, setSpinDirection] = React.useState(null); // 'down' | 'up' | null
+  const markRef = React.useRef(null);
   React.useEffect(() => {
+    const el = markRef.current;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Rotation is driven here, not by a CSS @keyframes animation, because a
+    // CSS animation snaps back to the element's base (non-animating) style
+    // the instant its animation-name is removed — there is no way to freeze
+    // it mid-cycle at whatever angle it happened to reach. Tracking the
+    // angle ourselves and only ever advancing it means the mark simply
+    // holds wherever it stopped.
+    //
+    // Direction is a plain variable, not React state: the 'scroll' event
+    // only fires when scrollY actually changes, so its cadence alone tells
+    // us whether the page is moving right now, independent of whether a
+    // gesture (scrollbar drag, held key) is still being held.
+    let direction = null; // 'down' | 'up' | null
     let lastY = window.scrollY;
-    let idleTimer;
+    let stopTimer;
+    let angle = 0;
+    let lastFrameTime = null;
+    let rafId = requestAnimationFrame(tick);
+    const DEGREES_PER_MS = 360 / 2800; // one full turn per 2.8s, matches prior speed
+
+    function tick(now) {
+      rafId = requestAnimationFrame(tick);
+      if (lastFrameTime === null) { lastFrameTime = now; return; }
+      const dt = now - lastFrameTime;
+      lastFrameTime = now;
+      if (!direction) return; // frozen — don't touch the angle
+      angle += (direction === 'down' ? 1 : -1) * DEGREES_PER_MS * dt;
+      el.style.transform = `rotate(${angle}deg)`;
+    }
     function onScroll() {
       const y = window.scrollY;
-      setSpinDirection(y === lastY ? null : y > lastY ? 'down' : 'up');
+      direction = y === lastY ? direction : y > lastY ? 'down' : 'up';
       lastY = y;
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => setSpinDirection(null), 300);
+      clearTimeout(stopTimer);
+      stopTimer = setTimeout(() => { direction = null; }, 80);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
-      clearTimeout(idleTimer);
+      clearTimeout(stopTimer);
+      cancelAnimationFrame(rafId);
     };
   }, []);
   const items = [
@@ -178,7 +208,7 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
       <header className="site-header">
         <div className="container site-header__inner">
           <a className="brand" href={SITE_ROOT + 'index.html'}>
-            <span className={'brand__mark' + (spinDirection ? ' is-spinning-' + spinDirection : '')}><BrandMark size={50}/></span>
+            <span className="brand__mark" ref={markRef}><BrandMark size={50}/></span>
             <span className="brand__name">Constructor Fabric</span>
           </a>
           <nav className="nav">
@@ -238,7 +268,7 @@ window.SiteFooter = function SiteFooter() {
         <div className="site-footer__grid">
           <div>
             <a className="brand" href={SITE_ROOT + 'index.html'} style={{color:'#fff'}}>
-              <span className="brand__mark"><BrandMark light/></span>
+              <span className="brand__mark"><BrandMark size={50} light/></span>
               <span>Constructor Fabric</span>
             </a>
             <p className="site-footer__about">
