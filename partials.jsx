@@ -53,15 +53,81 @@ if (!document.getElementById('cookieyes')) {
 })();
 
 window.BrandMark = function BrandMark({ size = 28, light = false }) {
-  const c1 = light ? '#fff' : '#00204D';
-  const c2 = '#0065E3';
-  const c3 = '#6BA5F0';
+  /* SVG IDs are fixed across instances so the browser reuses the cached
+     gradient/mask defs. No other inline SVG on the site uses these IDs. */
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="2" y="2" width="13" height="13" rx="2.5" fill={c1}/>
-      <rect x="17" y="2" width="13" height="13" rx="2.5" fill={c2}/>
-      <rect x="2" y="17" width="13" height="13" rx="2.5" fill={c3}/>
-      <rect x="17" y="17" width="13" height="13" rx="2.5" fill={c1} fillOpacity="0.18" stroke={c1} strokeWidth="1.5"/>
+    <svg width={size} height={size} viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="bm-blue" gradientUnits="userSpaceOnUse" x1="554" y1="170" x2="830" y2="542">
+          <stop stopColor="#0048FF"/>
+          <stop offset=".3" stopColor="#006BFF"/>
+          <stop offset=".6" stopColor="#004DEB"/>
+          <stop offset=".85" stopColor="#00249D"/>
+          <stop offset="1" stopColor="#010D52"/>
+        </linearGradient>
+        <linearGradient id="bm-cyan" gradientUnits="userSpaceOnUse" x1="545" y1="150" x2="830" y2="542">
+          <stop stopColor="#0048FF"/>
+          <stop offset=".38" stopColor="#00B8F5"/>
+          <stop offset=".65" stopColor="#004BEF"/>
+          <stop offset="1" stopColor="#010D52"/>
+        </linearGradient>
+        <radialGradient id="bm-underpass-shade" gradientUnits="userSpaceOnUse" cx="490" cy="290" r="190">
+          <stop stopColor="#00135F" stopOpacity=".8"/>
+          <stop offset=".55" stopColor="#00135F" stopOpacity=".3"/>
+          <stop offset="1" stopColor="#00135F" stopOpacity="0"/>
+        </radialGradient>
+        <mask id="bm-woven-silhouette" maskUnits="userSpaceOnUse" x="0" y="0" width="1254" height="1254" style={{maskType:'luminance'}}>
+          <g fill="white">
+            <circle cx="627" cy="627" r="190"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z" transform="rotate(45 627 627)"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z" transform="rotate(90 627 627)"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z" transform="rotate(135 627 627)"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z" transform="rotate(180 627 627)"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z" transform="rotate(225 627 627)"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z" transform="rotate(270 627 627)"/>
+            <path d="M365.790116 519.344519 L502.276263 189.837811 A135 135 0 0 1 751.723737 189.837811 L888.209884 519.344519 L786.583136 561.439697 L650.096988 231.932989 A25 25 0 0 0 603.903012 231.932989 L467.416864 561.439697 Z" transform="rotate(315 627 627)"/>
+          </g>
+          <circle cx="627" cy="627" r="177" fill="black"/>
+        </mask>
+      </defs>
+      <svg x="30" y="30" width="120" height="120" viewBox="106 106 1042 1042">
+      <g mask="url(#bm-woven-silhouette)">
+        <rect width="1254" height="1254" fill="#0641AD"/>
+        <g transform="rotate(0 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-cyan)" stroke="url(#bm-cyan)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+        <g transform="rotate(45 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-blue)" stroke="url(#bm-blue)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+        <g transform="rotate(90 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-cyan)" stroke="url(#bm-cyan)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+        <g transform="rotate(135 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-blue)" stroke="url(#bm-blue)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+        <g transform="rotate(180 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-cyan)" stroke="url(#bm-cyan)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+        <g transform="rotate(225 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-blue)" stroke="url(#bm-blue)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+        <g transform="rotate(270 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-cyan)" stroke="url(#bm-cyan)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+        <g transform="rotate(315 627 627)">
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-blue)" stroke="url(#bm-blue)" strokeWidth="0.5" strokeLinejoin="round"/>
+          <path d="M474.098878 257.864037 L282.584911 -204.491579 A900 900 0 0 1 971.415089 -204.491579 L779.901122 257.864037 L821.9963 359.490786 L894.509214 432.0037 L801.52749 656.481442 A177 177 0 0 0 771.256099 524.436956 L678.274374 299.959214 L575.725626 299.959214 Z" fill="url(#bm-underpass-shade)" stroke="url(#bm-underpass-shade)" strokeWidth="0.5" strokeLinejoin="round"/>
+        </g>
+      </g>
+      </svg>
     </svg>
   );
 };
@@ -76,6 +142,23 @@ window.GitHubIcon = function GitHubIcon({ size = 18 }) {
 
 window.SiteHeader = function SiteHeader({ active = 'home' }) {
   const [open, setOpen] = React.useState(false);
+  const [spinDirection, setSpinDirection] = React.useState(null); // 'down' | 'up' | null
+  React.useEffect(() => {
+    let lastY = window.scrollY;
+    let idleTimer;
+    function onScroll() {
+      const y = window.scrollY;
+      setSpinDirection(y === lastY ? null : y > lastY ? 'down' : 'up');
+      lastY = y;
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => setSpinDirection(null), 300);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(idleTimer);
+    };
+  }, []);
   const items = [
     { id: 'home', label: 'Home', href: SITE_ROOT + 'index.html' },
     { id: 'try', label: 'Try', href: SITE_ROOT + 'try.html' },
@@ -95,7 +178,7 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
       <header className="site-header">
         <div className="container site-header__inner">
           <a className="brand" href={SITE_ROOT + 'index.html'}>
-            <span className="brand__mark"><BrandMark/></span>
+            <span className={'brand__mark' + (spinDirection ? ' is-spinning-' + spinDirection : '')}><BrandMark/></span>
             <span>Constructor Fabric</span>
           </a>
           <nav className="nav">

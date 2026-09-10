@@ -222,6 +222,14 @@ section[id] { scroll-margin-top: 80px; }
   letter-spacing: -0.01em;
 }
 .brand__mark { width: 28px; height: 28px; }
+.site-header .brand__mark.is-spinning-down { animation: brand-mark-spin-cw 2.8s linear infinite; }
+.site-header .brand__mark.is-spinning-up { animation: brand-mark-spin-ccw 2.8s linear infinite; }
+@keyframes brand-mark-spin-cw { to { transform: rotate(360deg); } }
+@keyframes brand-mark-spin-ccw { to { transform: rotate(-360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .site-header .brand__mark.is-spinning-down,
+  .site-header .brand__mark.is-spinning-up { animation: none; }
+}
 
 .nav { display: none; }
 @media (min-width: 1024px) {
