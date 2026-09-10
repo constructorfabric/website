@@ -178,8 +178,8 @@ window.SiteHeader = function SiteHeader({ active = 'home' }) {
       <header className="site-header">
         <div className="container site-header__inner">
           <a className="brand" href={SITE_ROOT + 'index.html'}>
-            <span className={'brand__mark' + (spinDirection ? ' is-spinning-' + spinDirection : '')}><BrandMark/></span>
-            <span>Constructor Fabric</span>
+            <span className={'brand__mark' + (spinDirection ? ' is-spinning-' + spinDirection : '')}><BrandMark size={50}/></span>
+            <span className="brand__name">Constructor Fabric</span>
           </a>
           <nav className="nav">
             {items.map(it => (
